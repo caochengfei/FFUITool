@@ -4,7 +4,7 @@ PODS:
   - FBSnapshotTestCase/Core (2.1.4)
   - FBSnapshotTestCase/SwiftSupport (2.1.4):
     - FBSnapshotTestCase/Core
-  - FFUITool (0.1.0)
+  - FFUITool (0.1.1)
 
 DEPENDENCIES:
   - FBSnapshotTestCase (~> 2.1.4)
@@ -20,7 +20,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   FBSnapshotTestCase: 094f9f314decbabe373b87cc339bea235a63e07a
-  FFUITool: 78b9952cf30fc9742ffef2f28b60800c9fd73c09
+  FFUITool: 6fdd3b4cdf9933ab35d48c1f8fb1bf145b765f80
 
 PODFILE CHECKSUM: 92be862258e68f413c470497709f543f06b69b48
 

@@ -9,14 +9,14 @@ import UIKit
 
 extension String {
     /// 十六进制颜色转换为UIColor
-    var toRGB: UIColor {
+    public var toRGB: UIColor {
         return uicolor(alpha: 1.0)
     }
     
     /// 十六进制颜色转换为UIColor
     /// - Parameter alpha: 透明度
     /// - Returns: UIColor
-    func uicolor(alpha: CGFloat = 1.0) -> UIColor {
+    public func uicolor(alpha: CGFloat = 1.0) -> UIColor {
         var red: UInt64 = 0, green: UInt64 = 0, blue: UInt64 = 0
         var hex = self
         // 去掉前缀

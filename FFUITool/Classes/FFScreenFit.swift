@@ -7,49 +7,49 @@
 
 import UIKit
 
-class FFScreenFit {
-    let screenWidth = UIScreen.main.bounds.width
-    let screenHeight = UIScreen.main.bounds.height
-    let scale = UIScreen.main.scale
-    var defaultSize: CGFloat = 375
+open class FFScreenFit {
+    public let screenWidth = UIScreen.main.bounds.width
+    public let screenHeight = UIScreen.main.bounds.height
+    public let scale = UIScreen.main.scale
+    public var defaultSize: CGFloat = 375
     
     private static let _instace = FFScreenFit();
+    private init(){};
     
-    static func instance() -> FFScreenFit{
+    public static func instance() -> FFScreenFit{
         return _instace;
     }
     
-    private init(){};
     
-    func config(defaultSize: CGFloat = 375) {
+    public func config(defaultSize: CGFloat = 375) {
         self.defaultSize = defaultSize;
     }
     
-    func getPx(size: CGFloat) -> CGFloat {
+    public func getPx(size: CGFloat) -> CGFloat {
         return screenWidth / defaultSize * size;
     }
 }
 
 extension Double {
-    var px: Double {
+    public var px: Double {
         return FFScreenFit.instance().getPx(size: CGFloat(self))
     }
 }
 
 extension Float {
-    var px: Float {
+    public var px: Float {
         return Float(FFScreenFit.instance().getPx(size: CGFloat(self)))
     }
 }
 
 extension CGFloat {
-    var px: CGFloat {
+    public var px: CGFloat {
         return CGFloat(FFScreenFit.instance().getPx(size: CGFloat(self)))
     }
 }
 
 extension Int {
-    var px: Int {
+    public var px: Int {
         return Int(FFScreenFit.instance().getPx(size: CGFloat(self)))
     }
 }
