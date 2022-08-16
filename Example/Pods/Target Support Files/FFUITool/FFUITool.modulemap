@@ -1,0 +1,6 @@
+framework module FFUITool {
+  umbrella header "FFUITool-umbrella.h"
+
+  export *
+  module * { export * }
+}
