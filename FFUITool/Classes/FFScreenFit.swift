@@ -7,19 +7,23 @@
 
 import UIKit
 
+public let kScreenWidth = FFScreenFit.instance().screenWidth
+public let kScreenHeight = FFScreenFit.instance().screenHeight
+
 open class FFScreenFit {
+    //MARK: private
+    private static let _instace = FFScreenFit();
+    private init(){};
+    
+    //MARK: public
     public let screenWidth = UIScreen.main.bounds.width
     public let screenHeight = UIScreen.main.bounds.height
     public let scale = UIScreen.main.scale
     public var defaultSize: CGFloat = 375
     
-    private static let _instace = FFScreenFit();
-    private init(){};
-    
     public static func instance() -> FFScreenFit{
         return _instace;
     }
-    
     
     public func config(defaultSize: CGFloat = 375) {
         self.defaultSize = defaultSize;
