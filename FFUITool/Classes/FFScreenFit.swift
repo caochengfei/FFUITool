@@ -57,7 +57,7 @@ extension FFScreenFit {
          */
         
         if #available(iOS 15.0, *) {
-            guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene, let window = windowScene.keyWindow else {
+            guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene, let window = windowScene.windows.first else {
                 return false
             }
             if window.safeAreaInsets.bottom > 0 {
