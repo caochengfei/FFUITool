@@ -13,3 +13,13 @@ public func ffPrint<T>(_ message: T, file: String = #file, funcName: String = #f
         print("***********Log************\n🐶🐶【\(fileName)：\(lineNum)】->>   \(message)")
     #endif
 }
+
+public func ffAssert(_ condition: Bool, _ message: String? = nil) {
+    #if DEBUG
+    assert(condition)
+    #else
+    if condition {
+        return
+    }
+    #endif
+}

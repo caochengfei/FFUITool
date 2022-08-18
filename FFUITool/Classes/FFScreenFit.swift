@@ -9,6 +9,9 @@ import UIKit
 
 public let kScreenWidth = FFScreenFit.instance().screenWidth
 public let kScreenHeight = FFScreenFit.instance().screenHeight
+public var kIsFullScreen = FFScreenFit.instance().isFullScreen
+public let kNavigationBarHeight = FFScreenFit.instance().navigationBarHeight
+public let kBottomSafeHeight = FFScreenFit.instance().bottomSafeHeight
 
 open class FFScreenFit {
     //MARK: private
@@ -34,6 +37,51 @@ open class FFScreenFit {
     }
 }
 
+//MARK: - 刘海屏判断
+extension FFScreenFit {
+    
+    public var navigationBarHeight: CGFloat {
+        return isFullScreen ? 88 : 64
+    }
+    
+    public var bottomSafeHeight: CGFloat {
+        return isFullScreen ? 34 : 0
+    }
+    
+    public var isFullScreen: Bool {
+        /**
+         竖屏
+         UIEdgeInsets(top: 44.0, left: 0.0, bottom: 34.0, right: 0.0)
+         横屏
+         UIEdgeInsets(top: 0.0, left: 44.0, bottom: 21.0, right: 44.0)
+         */
+        
+        if #available(iOS 15.0, *) {
+            guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene, let window = windowScene.keyWindow else {
+                return false
+            }
+            if window.safeAreaInsets.bottom > 0 {
+               return true
+            }
+        } else {
+            // Fallback on earlier versions
+            let window = UIApplication.shared.windows.first
+            if #available(iOS 11.0, *) {
+                if window?.safeAreaInsets.bottom ?? 0 > 0 {
+                    return true
+                } else {
+                    return false
+                }
+            } else {
+                // Fallback on earlier versions
+                return false
+            }
+        }
+        return false
+    }
+}
+
+//MARK: - transform px
 extension Double {
     public var px: Double {
         return FFScreenFit.instance().getPx(size: CGFloat(self))
