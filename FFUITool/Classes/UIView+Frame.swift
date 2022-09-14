@@ -91,4 +91,38 @@ extension UIView {
         }
     }
     
+    public var frameInWindow: CGRect {
+        return superview?.convert(frame, to: getTop(type: UIWindow.self)) ?? .infinite
+    }
+}
+
+extension UIResponder {
+    public func getTop<T: UIResponder>(type:T.Type) ->T? {
+        var nextResponder:UIResponder? = self
+        while nextResponder != nil {
+            let tmpNext = nextResponder?.next
+            if tmpNext == nil || tmpNext is T {
+                return tmpNext as? T
+            }
+            nextResponder = tmpNext
+        }
+        
+        return nil
+    }
+}
+
+extension UIView {
+    public func ffShadow(color: UIColor = UIColor.black, offSet: CGSize = CGSize(width: 0, height: 0), radius: CGFloat = 5, path: CGPath? = nil) {
+        self.layer.shadowOffset = offSet
+        self.layer.shadowColor = color.cgColor
+        self.layer.shadowRadius = radius
+        self.layer.shadowPath = path
+        self.layer.shadowOpacity = 0.1
+        if path != nil {
+            self.layer.shadowPath = path
+        } else {
+            superview?.layoutIfNeeded()
+            self.layer.shadowPath = CGPath.init(roundedRect: self.bounds, cornerWidth: self.layer.cornerRadius, cornerHeight: self.layer.cornerRadius, transform: nil)
+        }
+    }
 }

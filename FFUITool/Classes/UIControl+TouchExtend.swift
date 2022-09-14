@@ -36,3 +36,33 @@ extension UIControl {
       return bounds.contains(point)
     }
 }
+
+extension UIControl {
+    public func addZoomInAnimate() {
+        self.addTarget(self, action: #selector(touchUpPress), for: .touchUpInside)
+        self.addTarget(self, action: #selector(touchUpPress), for: .touchCancel)
+        self.addTarget(self, action: #selector(touchUpPress), for: .touchUpOutside)
+        self.addTarget(self, action: #selector(touchDownPress), for: .touchDown)
+    }
+    
+    public func removeZoomInAnimate() {
+        self.removeTarget(self, action: #selector(touchUpPress), for: .touchUpInside)
+        self.removeTarget(self, action: #selector(touchUpPress), for: .touchCancel)
+        self.removeTarget(self, action: #selector(touchUpPress), for: .touchUpOutside)
+        self.removeTarget(self, action: #selector(touchDownPress), for: .touchDown)
+    }
+    
+    @objc func touchUpPress() {
+        UIView.animate(withDuration: 0.2) {
+            self.transform = CGAffineTransformMakeScale(1, 1)
+        }
+    }
+    
+    @objc func touchDownPress() {
+        let wh = min(self.frame.width, self.frame.height)
+        let scale = 1 - min(wh * 0.15, 3) / wh
+        UIView.animate(withDuration: 0.2) {
+            self.transform = CGAffineTransformMakeScale(scale, scale)
+        }
+    }
+}

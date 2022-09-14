@@ -12,6 +12,7 @@ public let kScreenHeight = FFScreenFit.instance().screenHeight
 public var kIsFullScreen = FFScreenFit.instance().isFullScreen
 public let kNavigationBarHeight = FFScreenFit.instance().navigationBarHeight
 public let kBottomSafeHeight = FFScreenFit.instance().bottomSafeHeight
+public let kTopSafeHeight = FFScreenFit.instance().topSafeHeight
 
 open class FFScreenFit {
     //MARK: private
@@ -19,8 +20,8 @@ open class FFScreenFit {
     private init(){};
     
     //MARK: public
-    public let screenWidth = UIScreen.main.bounds.width
-    public let screenHeight = UIScreen.main.bounds.height
+    public var screenWidth = UIScreen.main.bounds.width
+    public var screenHeight = UIScreen.main.bounds.height
     public let scale = UIScreen.main.scale
     public var defaultSize: CGFloat = 375
     
@@ -35,6 +36,7 @@ open class FFScreenFit {
     public func getPx(size: CGFloat) -> CGFloat {
         return screenWidth / defaultSize * size;
     }
+
 }
 
 //MARK: - 刘海屏判断
@@ -46,6 +48,10 @@ extension FFScreenFit {
     
     public var bottomSafeHeight: CGFloat {
         return isFullScreen ? 34 : 0
+    }
+    
+    public var topSafeHeight: CGFloat {
+        return isFullScreen ? 48 : 20
     }
     
     public var isFullScreen: Bool {
