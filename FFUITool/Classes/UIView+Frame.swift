@@ -91,7 +91,7 @@ extension UIView {
         }
     }
     
-    public var frameInWindow: CGRect {
+    @objc public var frameInWindow: CGRect {
         return superview?.convert(frame, to: getTop(type: UIWindow.self)) ?? .infinite
     }
 }
