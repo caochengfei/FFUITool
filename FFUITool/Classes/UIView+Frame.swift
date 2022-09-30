@@ -112,7 +112,7 @@ extension UIResponder {
 }
 
 extension UIView {
-    public func ffShadow(color: UIColor = UIColor.black, offSet: CGSize = CGSize(width: 0, height: 0), radius: CGFloat = 5, path: CGPath? = nil) {
+    public func ffShadow(color: UIColor = UIColor.black.dynamicWhite, offSet: CGSize = CGSize(width: 0, height: 0), radius: CGFloat = 5, path: CGPath? = nil) {
         self.layer.shadowOffset = offSet
         self.layer.shadowColor = color.cgColor
         self.layer.shadowRadius = radius

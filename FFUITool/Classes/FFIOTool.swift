@@ -66,6 +66,19 @@ public class FFIOTool : NSObject {
         return url
     }
     
+    @discardableResult
+    public static func saveFile(data: Data?, url: URL) -> Bool {
+        guard let data = data  else {
+            return false
+        }
+        do {
+            try data.write(to: url, options: .atomic)
+            return true
+        } catch {
+            return false
+        }
+    }
+    
     public static func copyItem(fromPath: String, toPath: String) {
         let fromUrl = URL(fileURLWithPath: fromPath)
         let toUrl = URL(fileURLWithPath: toPath)

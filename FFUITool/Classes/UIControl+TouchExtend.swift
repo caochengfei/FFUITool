@@ -54,7 +54,7 @@ extension UIControl {
     
     @objc func touchUpPress() {
         UIView.animate(withDuration: 0.2) {
-            self.transform = CGAffineTransformMakeScale(1, 1)
+            self.transform = CGAffineTransform.init(scaleX: 1, y: 1)
         }
     }
     
@@ -62,7 +62,7 @@ extension UIControl {
         let wh = min(self.frame.width, self.frame.height)
         let scale = 1 - min(wh * 0.15, 3) / wh
         UIView.animate(withDuration: 0.2) {
-            self.transform = CGAffineTransformMakeScale(scale, scale)
+            self.transform = self.transform.scaledBy(x: scale, y: scale)
         }
     }
 }

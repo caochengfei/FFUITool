@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SwiftUI
 
 extension String {
     /// 十六进制颜色转换为UIColor
@@ -38,5 +39,92 @@ extension String {
         Scanner(string: String(hex[hex.index(hex.startIndex, offsetBy: 4)...])).scanHexInt64(&blue)
         
         return UIColor(red: CGFloat(red) / 255.0, green: CGFloat(green) / 255.0, blue: CGFloat(blue) / 255.0, alpha: alpha)
+    }
+    
+    @available(iOS 13.0, *)
+    public var toColor: Color {
+        return Color(self.toRGB)
+    }
+    
+    @available(iOS 13.0, *)
+    public func color(alpha: CGFloat = 1.0) -> Color {
+        return Color(self.uicolor(alpha: alpha))
+    }
+    
+}
+
+extension UIColor {
+    
+    public var dynamicWhite: UIColor {
+        if #available(iOS 13, *) {
+            return UIColor.init { trait in
+                return trait.userInterfaceStyle == .light ? self : .white
+            }
+        }
+        return self
+    }
+    
+    public var dynamicGray6: UIColor {
+        if #available(iOS 13, *) {
+            return UIColor.init { trait in
+                return trait.userInterfaceStyle == .light ? self : .systemGray6
+            }
+        }
+        return self
+    }
+    
+    public var dynamicGray5: UIColor {
+        if #available(iOS 13, *) {
+            return UIColor.init { trait in
+                return trait.userInterfaceStyle == .light ? self : .systemGray5
+            }
+        }
+        return self
+    }
+    
+    public var dynamicGray4: UIColor {
+        if #available(iOS 13, *) {
+            return UIColor.init { trait in
+                return trait.userInterfaceStyle == .light ? self : .systemGray4
+            }
+        }
+        return self
+    }
+    
+    public var dynamicGray3: UIColor {
+        if #available(iOS 13, *) {
+            return UIColor.init { trait in
+                return trait.userInterfaceStyle == .light ? self : .systemGray3
+            }
+        }
+        return self
+    }
+    
+    public var dynamicGray2: UIColor {
+        if #available(iOS 13, *) {
+            return UIColor.init { trait in
+                return trait.userInterfaceStyle == .light ? self : .systemGray2
+            }
+        }
+        return self
+    }
+    
+    public var dynamicGray: UIColor {
+        if #available(iOS 13, *) {
+            return UIColor.init { trait in
+                return trait.userInterfaceStyle == .light ? self : .systemGray
+            }
+        }
+        return self
+    }
+    
+    
+    public var dynamicBackground: UIColor {
+        if #available(iOS 13, *) {
+            return UIColor.init { trait in
+                return trait.userInterfaceStyle == .light ? self : .systemBackground
+            }
+        }
+        return self
     }
 }
