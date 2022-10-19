@@ -128,3 +128,44 @@ extension UIColor {
         return self
     }
 }
+
+extension UIColor {
+    public var sRGB: CGColor {
+        return cgColor.converted(
+            to: CGColorSpace(name: CGColorSpace.sRGB)!,
+            intent: CGColorRenderingIntent.defaultIntent,
+            options: nil
+        ) ?? cgColor
+    }
+}
+
+
+extension CGColor {
+    public var red: CGFloat {
+        guard let components = components, components.count == 4 else {
+            return 0
+        }
+        return components[0]
+    }
+    
+    public var green: CGFloat {
+        guard let components = components, components.count == 4 else {
+            return 0
+        }
+        return components[1]
+    }
+    
+    public var blue: CGFloat {
+        guard let components = components, components.count == 4 else {
+            return 0
+        }
+        return components[2]
+    }
+    
+    public var alpha: CGFloat {
+        guard let components = components, components.count == 4 else {
+            return 0
+        }
+        return components[3]
+    }
+}
