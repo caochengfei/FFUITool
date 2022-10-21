@@ -14,7 +14,7 @@ public enum FFIOToolDirectory: String {
     case tmp
 }
 
-public class FFIOTool : NSObject {
+public class FFDiskTool : NSObject {
     
     public static var documentPath: String {
         return documentUrl.path
@@ -82,7 +82,7 @@ public class FFIOTool : NSObject {
     public static func copyItem(fromPath: String, toPath: String) {
         let fromUrl = URL(fileURLWithPath: fromPath)
         let toUrl = URL(fileURLWithPath: toPath)
-        FFIOTool.copyItem(fromUrl: fromUrl, toUrl: toUrl)
+        FFDiskTool.copyItem(fromUrl: fromUrl, toUrl: toUrl)
     }
     
     public static func copyItem(fromUrl: URL, toUrl: URL) {
