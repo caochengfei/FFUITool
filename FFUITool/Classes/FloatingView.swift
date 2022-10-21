@@ -7,8 +7,19 @@
 
 import Foundation
 
+public protocol FloatingViewProtocol: AnyObject {
+    func floatingView(view: FloatingView, willRemove: Bool)
+    func floatingView(view: FloatingView, didSelected: Bool)
+}
+
+public typealias FloatingViewClickCallback = ((_ view: FloatingView)->())
+
 open class FloatingView: UIView {
     
+    public var id: String = UUID().uuidString
+    
+    public weak var delegate: FloatingViewProtocol?
+            
     /// 是否需要平移
     open var isNeedPan: Bool = true {
         didSet {
@@ -30,12 +41,23 @@ open class FloatingView: UIView {
         }
     }
     
+    var lastRotation: CGFloat = 0
+    
     open var isSelected: Bool = false {
         didSet {
             self.layer.borderWidth = isSelected ? 1 : 0
             self.pinchGesture.isEnabled = isSelected
             self.panGesture.isEnabled = isSelected
             self.rotationGesture.isEnabled = isSelected
+            if isSelected == false {
+                deleteButton.isHidden = true
+            }
+        }
+    }
+    
+    open var isShowDelete: Bool = false {
+        didSet {
+            deleteButton.isHidden = !isShowDelete
         }
     }
     
@@ -45,15 +67,18 @@ open class FloatingView: UIView {
     /// 显示内容 uiview/uitextview/uiimageview 等
     open var contentView: UIView? {
         didSet {
+            let center = self.center
             oldValue?.removeFromSuperview()
             self.transform = CGAffineTransform.identity
             contentView?.isUserInteractionEnabled = false
             
             if let contentView = contentView {
                 self.frame = contentView.frame
+                self.center = center
                 contentView.frame = self.bounds
                 contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
                 self.insertSubview(contentView, at: 0)
+                self.transform = CGAffineTransform.init(rotationAngle: lastRotation)
             }
         }
     }
@@ -79,11 +104,39 @@ open class FloatingView: UIView {
         return rotation
     }()
     
+    open lazy var tapGesture: UITapGestureRecognizer = {
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tapAction(_ :)))
+        tapGesture.delegate = self
+        return tapGesture
+    }()
+    
+    lazy var deleteButton: UIButton = {
+        let button = UIButton(type: .custom)
+        button.setTitle("Delete", for: .normal)
+        button.clickEdgeInsets = UIEdgeInsets.init(top: 10, left: 10, bottom: 10, right: 10)
+        button.addTarget(self, action: #selector(deleteButtonClick), for: .touchUpInside)
+        button.size = CGSize(width: 72, height: 43)
+        button.titleEdgeInsets = UIEdgeInsets(top: -4, left: 0, bottom: 4, right: 0)
+        button.layer.addSublayer(deleteButtonLayer)
+        return button
+    }()
+    
+    lazy var deleteButtonLayer: CAShapeLayer = {
+        let layer = CAShapeLayer()
+        layer.fillColor = "#1D1D1D".uicolor(alpha: 0.94).cgColor
+//        layer.borderColor = UIColor.red.cgColor
+//        layer.borderWidth = 1
+        return layer
+    }()
+    
+    
     open var originalPoint: CGPoint = .zero
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
+        self.isExclusiveTouch = true
         configGestures()
+        addSubview(deleteButton)
     }
     
     public required init?(coder: NSCoder) {
@@ -102,6 +155,8 @@ open class FloatingView: UIView {
         if self.isNeedRotate && self.gestureRecognizers?.contains(self.rotationGesture) != true {
             self.addGestureRecognizer(self.rotationGesture)
         }
+        
+        self.addGestureRecognizer(tapGesture)
     }
     
     public override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
@@ -122,7 +177,37 @@ open class FloatingView: UIView {
         if view == self, self.isHidden == false {
             return view
         }
+        self.isSelected = false
         return nil
+    }
+    
+    @objc func deleteButtonClick() {
+        delegate?.floatingView(view: self, willRemove: true)
+    }
+    
+    open override func layoutSubviews() {
+        super.layoutSubviews()
+        deleteButton.size = CGSize(width: 72, height: 43)
+        deleteButton.bottom = 0
+        deleteButton.centerX = self.width / 2
+        
+        let r = deleteButton.height * 0.8 * 0.2
+        let size = deleteButton.size
+        
+        let path = UIBezierPath()
+        path.move(to: CGPoint(x:r , y: 0))
+        path.addLine(to: CGPoint(x: size.width - r, y: 0))
+        path.addQuadCurve(to: CGPoint(x: size.width, y: r), controlPoint: CGPoint(x: size.width, y: 0))
+        path.addLine(to: CGPoint(x: size.width, y: size.height * 0.8 - r))
+        path.addQuadCurve(to: CGPoint(x: size.width - r, y: size.height * 0.8), controlPoint: CGPoint(x: size.width, y: size.height * 0.8))
+        path.addLine(to: CGPoint(x: size.width * 0.65, y: size.height * 0.8))
+        path.addLine(to: CGPoint(x: size.width * 0.5, y: size.height))
+        path.addLine(to: CGPoint(x: size.width * 0.35, y: size.height * 0.8))
+        path.addLine(to: CGPoint(x: r, y: size.height * 0.8))
+        path.addQuadCurve(to: CGPoint(x: 0, y: size.height * 0.8 - r), controlPoint: CGPoint(x: 0, y: size.height * 0.8))
+        path.addLine(to: CGPoint(x: 0, y: r))
+        path.addQuadCurve(to: CGPoint(x: r, y: 0), controlPoint: CGPoint(x: 0, y: 0))
+        deleteButtonLayer.path = path.cgPath
     }
 }
 
@@ -197,11 +282,19 @@ extension FloatingView: UIGestureRecognizerDelegate {
         var oPoint = self.convert(self.realOriginalPoint, to: self.superview)
         self.center = oPoint
         
+        lastRotation += rotation.rotation
         self.transform = self.transform.rotated(by: rotation.rotation)
         rotation.rotation = 0
         
         oPoint = self.convert(self.realOriginalPoint, to: self.superview)
         self.center = CGPoint(x: self.centerX + (self.centerX - oPoint.x), y: self.centerY + (self.centerY - oPoint.y))
+    }
+    
+    @objc public func tapAction(_ tap: UITapGestureRecognizer) {
+        if self.isSelected == true {
+            self.isShowDelete = !self.isShowDelete
+        }
+        delegate?.floatingView(view: self, didSelected: true)
     }
     
     
