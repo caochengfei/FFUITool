@@ -42,6 +42,14 @@ public class FFDiskTool : NSObject {
     public static var cachePath: String {
         return cacheUrl.path
     }
+    
+    public static var tmpUrl: URL {
+        return URL(fileURLWithPath: NSTemporaryDirectory())
+    }
+    
+    public static var tmpPath: String {
+        return NSTemporaryDirectory()
+    }
 
     
     /// 创建文件夹
@@ -72,6 +80,9 @@ public class FFDiskTool : NSObject {
             return false
         }
         do {
+            if FileManager.default.fileExists(atPath: url.path) {
+                try FileManager.default.removeItem(at: url)
+            }
             try data.write(to: url, options: .atomic)
             return true
         } catch {
