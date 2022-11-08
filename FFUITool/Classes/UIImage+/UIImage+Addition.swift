@@ -32,9 +32,8 @@ extension UIImage {
         
         let colorSpace = CGColorSpaceCreateDeviceRGB()
         // 这里的 alphaInfo取第一张 图的
-        let context = CGContext.init(data: rawBytes, width: width, height: height, bitsPerComponent: 8, bytesPerRow: width * 4, space: colorSpace, bitmapInfo: CGBitmapInfo(rawValue: selfCGImage.alphaInfo.rawValue).rawValue, releaseCallback: { context, data in
-            context?.deallocate()
-//            data?.deallocate()
+        let context = CGContext.init(data: rawBytes, width: width, height: height, bitsPerComponent: 8, bytesPerRow: width * 4, space: colorSpace, bitmapInfo: CGBitmapInfo(rawValue: selfCGImage.alphaInfo.rawValue).rawValue, releaseCallback: { releaseInfo, data in
+            releaseInfo?.deallocate()
         }, releaseInfo: rawBytes)
         if direction == .vertical {
             // 因为坐标系跟屏幕坐标系y是相反的 所以这里的y要反过来用
