@@ -125,6 +125,10 @@ public struct DeviceDisplay: Hashable {
         self.width = CGFloat(width)
         self.height = CGFloat(height)
     }
+    
+    public var scale: CGFloat {
+        return width / height
+    }
 }
 
 open class DeviceDisplayPixel {
@@ -137,13 +141,13 @@ open class DeviceDisplayPixel {
     public static let iPhone8 = DeviceDisplay(width: 750, height: 1334)
     public static let iPhoneSE2 = DeviceDisplay(width: 750, height: 1334)
     public static let iPhoneSE3 = DeviceDisplay(width: 750, height: 1334)
+    public static let iPhone6Plus = DeviceDisplay(width: 1242, height: 2208)
+    public static let iPhone6sPlus = DeviceDisplay(width: 1242, height: 2208)
+    public static let iPhone7Plus = DeviceDisplay(width: 1242, height: 2208)
+    public static let iPhone8Plus = DeviceDisplay(width: 1242, height: 2208)
+    
     public static let iPhoneXR  = DeviceDisplay(width: 828, height: 1792)
     public static let iPhone11 = DeviceDisplay(width: 828, height: 1792)
-    public static let iPhone6Plus = DeviceDisplay(width: 1080, height: 1920)
-    public static let iPhone6sPlus = DeviceDisplay(width: 1080, height: 1920)
-    public static let iPhone7Plus = DeviceDisplay(width: 1080, height: 1920)
-    public static let iPhone8Plus = DeviceDisplay(width: 1080, height: 1920)
-    
     public static let iPhone12Mini = DeviceDisplay(width: 1080, height: 2340)
     public static let iPhone13Mini = DeviceDisplay(width: 1080, height: 2340)
     public static let iPhoneX = DeviceDisplay(width: 1125, height: 2436)
@@ -185,10 +189,11 @@ open class DeviceDisplayPixel {
     /// - Parameter size: 像素大小
     /// - Returns: 结果
     public static func isScreenShot(for size: DeviceDisplay) -> Bool {
-        if fullScreenDeviceSet.contains(size) {
+        let scale = size.width / size.height
+        if let _ = fullScreenDeviceSet.first(where: {$0.scale == scale}) {
             return true
         }
-        if unFullScreenDeviceSet.contains(size) {
+        if let _ = unFullScreenDeviceSet.first(where: {$0.scale == scale}) {
             return true
         }
         return false
@@ -198,12 +203,16 @@ open class DeviceDisplayPixel {
     /// 大于xr的width基本都是全面屏截屏
     /// - Parameter size: imageSize (pixel)
     /// - Returns: 是否全面屏截图
-    public static func isFullScreen(size: CGSize) -> Bool {
-        return size.width > iPhoneXR.width
+    public static func isFullScreen(size: DeviceDisplay) -> Bool {
+        let scale = size.width / size.height
+        if let _ = unFullScreenDeviceSet.first(where: {$0.scale == scale}) {
+            return false
+        }
+        return true
     }
     
     public static func getStatusBarItemPosition(size: DeviceDisplay) -> (CGRect, CGRect, CGRect?) {
-        if unFullScreenDeviceSet.contains(size) {
+        if !isFullScreen(size: size) {
             // 非刘海屏
             switch size.width {
             case 640:
@@ -218,11 +227,11 @@ open class DeviceDisplayPixel {
                     CGRect(x: (size.width - 75) / size.width, y: 0, width: 75 / size.width, height: 40 / size.height),
                     CGRect(x: 0.5, y: 0, width: 130 / size.width, height: 40 / size.height)
                 )
-            case 1080:
+            case 1242:
                 return (
-                    CGRect(x: 0, y: 0, width: 145 / size.width, height: 40 / size.height),
-                    CGRect(x: (size.width - 75) / size.width, y: 0, width: 75 / size.width, height: 40 / size.height),
-                    CGRect(x: 0.5, y: 0, width: 130 / size.width, height: 40 / size.height)
+                    CGRect(x: 0, y: 0, width: 200 / size.width, height: 60 / size.height),
+                    CGRect(x: (size.width - 95) / size.width, y: 0, width: 95 / size.width, height: 60 / size.height),
+                    CGRect(x: 0.5, y: 0, width: 200 / size.width, height: 60 / size.height)
                 )
             default:
                 return (
