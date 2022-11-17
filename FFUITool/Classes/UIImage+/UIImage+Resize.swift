@@ -1,0 +1,121 @@
+//
+//  UIImage+Resize.swift
+//  Picroll
+//
+//  Created by cofey on 2022/8/19.
+//
+
+import UIKit
+import ImageIO
+
+extension UIImage {
+    /// 根据大小缩放图片
+    /// - Parameter size: 目标大小
+    /// - Returns: UIImage？
+    public func resized(size: CGSize) -> UIImage? {
+        if#available(iOS 10, *) {
+            let render = UIGraphicsImageRenderer(size: size)
+            return render.image { context in
+                self.draw(in: CGRect(origin: .zero, size: size))
+            }
+        } else {
+            UIGraphicsBeginImageContextWithOptions(size, false, UIScreen.main.scale)
+            self.draw(in: CGRect(origin: .zero, size: size))
+            let image = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            return image
+        }
+    }
+    
+    public func resizedWithGPU(size: CGSize) -> UIImage? {
+        // 设置缩放比例
+        var scale: CGFloat = 1
+        if size.width != CGFLOAT_MAX {
+            scale = size.width / self.size.width
+        } else if size.height != CGFLOAT_MAX {
+            scale = size.height / self.size.height
+        }
+                
+        let ciImage = self.ciImage != nil ? self.ciImage : CIImage.init(image: self)
+        let filter = CIFilter.init(name: "CIAffineTransform", parameters: [kCIInputImageKey : ciImage as Any])
+        filter?.setDefaults()
+        filter?.setValue(CGAffineTransform(scaleX: scale, y: scale), forKey: "inputTransform")
+        
+        // gpu处理
+        let context = CIContext.init(options: [CIContextOption.useSoftwareRenderer : false])
+        
+        // 根据滤镜输出
+        guard let outputImage = filter?.outputImage,
+              let cgImage = context.createCGImage(outputImage, from: outputImage.extent) else {
+            return nil
+        }
+        var result = UIImage(cgImage: cgImage,scale: self.scale, orientation: self.imageOrientation)
+        return result
+    }
+    
+    /// 根据宽度等比例缩放图片
+    /// - Parameter width: 缩放到的宽度
+    /// - Returns: UIImage？
+    public func resized(with width: CGFloat) -> UIImage? {
+        let ratio = width / self.size.width
+        let height = self.size.height * ratio
+        return resized(size: CGSize(width: width, height: height))
+    }
+    
+    
+    /// 使用ImageIO缩放图片 流式读取 不需要解码
+    /// - Parameters:
+    ///   - url: 文件路径url
+    ///   - size: 目标大小
+    /// - Returns: UIImage
+    public static func resized(at url: URL, for size: CGSize) -> UIImage? {
+        let options: [CFString : Any] = [
+            kCGImageSourceCreateThumbnailFromImageIfAbsent: true,
+            kCGImageSourceCreateThumbnailWithTransform: true,
+            kCGImageSourceShouldCacheImmediately: true,
+            kCGImageSourceThumbnailMaxPixelSize: max(size.width, size.height)
+        ]
+        
+        guard let imageSource = CGImageSourceCreateWithURL(url as CFURL, nil),
+              let image = CGImageSourceCreateThumbnailAtIndex(imageSource, 0, options as CFDictionary) else {
+            return nil
+        }
+        return UIImage(cgImage: image)
+    }
+    
+    public func cropImage(boxRect: CGRect, scale: CGFloat = 1) -> UIImage? {
+        let x = boxRect.origin.x * self.size.width * scale
+        let y = boxRect.origin.y * self.size.height * scale
+        var width = boxRect.width * self.size.width * scale
+        var height = boxRect.height * self.size.height * scale
+        
+        if y + height > self.size.height * scale {
+            height = self.size.height * scale - y
+        }
+        
+        if x + width > self.size.width * scale {
+            width = self.size.width * scale - x
+        }
+        
+        let rect = CGRect(x: x, y: y, width: width, height: height)
+        guard let cgImage = self.cgImage?.cropping(to: rect) else {
+            return nil
+        }
+        return UIImage(cgImage: cgImage)
+    }
+    
+    public func cropImage(rect: CGRect, scale: CGFloat = 1) -> UIImage? {
+        return cropImage(boxRect: CGRect(x: rect.origin.x / self.size.width, y: rect.origin.y / self.size.height, width: rect.width / self.size.width, height: rect.height / self.size.height), scale: scale)
+    }
+    
+    
+    public func rotation(angle: CGFloat) -> UIImage? {
+        let ciContext = CIContext()
+        guard let ciImage = CIImage(image: self)?.transformed(by: CGAffineTransform.init(rotationAngle: angle)),
+              let cgImage = ciContext.createCGImage(ciImage, from: ciImage.extent) else {
+            return nil
+        }
+        return UIImage(cgImage: cgImage,scale: UIScreen.main.nativeScale, orientation: UIImage.Orientation.up)
+    }
+}
+

@@ -17,8 +17,8 @@ extension String {
     /// 十六进制颜色转换为UIColor
     /// - Parameter alpha: 透明度
     /// - Returns: UIColor
-    public func uicolor(alpha: CGFloat = 1.0) -> UIColor {
-        var red: UInt64 = 0, green: UInt64 = 0, blue: UInt64 = 0
+    public func uicolor(alpha: CGFloat? = 1.0) -> UIColor {
+        var red: UInt64 = 0, green: UInt64 = 0, blue: UInt64 = 0, _alpha: UInt64 = 0
         var hex = self
         // 去掉前缀
         if hex.hasPrefix("0x") || hex.hasPrefix("0X") {
@@ -36,9 +36,13 @@ extension String {
         
         Scanner(string: String(hex[..<hex.index(hex.startIndex, offsetBy: 2)])).scanHexInt64(&red)
         Scanner(string: String(hex[hex.index(hex.startIndex, offsetBy: 2)..<hex.index(hex.startIndex, offsetBy: 4)])).scanHexInt64(&green)
-        Scanner(string: String(hex[hex.index(hex.startIndex, offsetBy: 4)...])).scanHexInt64(&blue)
+        Scanner(string: String(hex[hex.index(hex.startIndex, offsetBy: 4)..<hex.index(hex.startIndex, offsetBy: 6)])).scanHexInt64(&blue)
+        if hex.count == 8 {
+            Scanner(string: String(hex[hex.index(hex.startIndex, offsetBy: 6)...])).scanHexInt64(&_alpha)
+            return UIColor(red: CGFloat(red) / 255.0, green: CGFloat(green) / 255.0, blue: CGFloat(blue) / 255.0, alpha: CGFloat(_alpha) / 255.0)
+        }
         
-        return UIColor(red: CGFloat(red) / 255.0, green: CGFloat(green) / 255.0, blue: CGFloat(blue) / 255.0, alpha: alpha)
+        return UIColor(red: CGFloat(red) / 255.0, green: CGFloat(green) / 255.0, blue: CGFloat(blue) / 255.0, alpha: alpha ?? 1.0)
     }
     
     @available(iOS 13.0, *)
@@ -50,7 +54,26 @@ extension String {
     public func color(alpha: CGFloat = 1.0) -> Color {
         return Color(self.uicolor(alpha: alpha))
     }
+}
+
+extension UIColor {
+    public typealias RGBComponents = (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat)
     
+    public var rgbComponents: RGBComponents {
+        var c: RGBComponents = (0,0,0,0)
+        if getRed(&c.red, green: &c.green, blue: &c.blue, alpha: &c.alpha) {
+            return c
+        }
+        return c
+    }
+    
+    public var hexRGB: String {
+        return String(format: "#%02x%02x%02x", Int(rgbComponents.red * 255), Int(rgbComponents.green * 255), Int(rgbComponents.blue * 255))
+    }
+    
+    public var hexRBGA: String {
+        return String(format: "#%02x%02x%02x%02x", Int(rgbComponents.red * 255), Int(rgbComponents.green * 255), Int(rgbComponents.blue * 255), Int(rgbComponents.alpha * 255) )
+    }
 }
 
 extension UIColor {
@@ -136,6 +159,10 @@ extension UIColor {
             intent: CGColorRenderingIntent.defaultIntent,
             options: nil
         ) ?? cgColor
+    }
+    
+    public var isCleanColor: Bool {
+        return self == UIColor.clear || self.sRGB.alpha == 0
     }
 }
 

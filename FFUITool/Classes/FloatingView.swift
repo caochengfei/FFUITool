@@ -110,6 +110,11 @@ open class FloatingView: UIView {
         return tapGesture
     }()
     
+    open lazy var longGesture: UILongPressGestureRecognizer = {
+        let longGesture = UILongPressGestureRecognizer(target: self, action: #selector(longAction(_ :)))
+        return longGesture
+    }()
+    
     lazy var deleteButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setTitle("Delete", for: .normal)
@@ -157,6 +162,8 @@ open class FloatingView: UIView {
         }
         
         self.addGestureRecognizer(tapGesture)
+        self.addGestureRecognizer(longGesture)
+        longGesture.require(toFail: tapGesture)
     }
     
     public override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
@@ -295,6 +302,17 @@ extension FloatingView: UIGestureRecognizerDelegate {
             self.isShowDelete = !self.isShowDelete
         }
         delegate?.floatingView(view: self, didSelected: true)
+    }
+    
+    @objc public func longAction(_ long: UILongPressGestureRecognizer) {
+        if long.state == .began {
+            if self.isSelected == false {
+                delegate?.floatingView(view: self, didSelected: true)
+                self.isShowDelete = true
+            } else {
+                self.isShowDelete = true
+            }
+        }
     }
     
     
