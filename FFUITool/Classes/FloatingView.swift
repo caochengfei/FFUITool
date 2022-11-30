@@ -10,6 +10,7 @@ import Foundation
 public protocol FloatingViewProtocol: AnyObject {
     func floatingView(view: FloatingView, willRemove: Bool)
     func floatingView(view: FloatingView, didSelected: Bool)
+    func floatingViewWillEdit(view: FloatingView)
 }
 
 public typealias FloatingViewClickCallback = ((_ view: FloatingView)->())
@@ -45,10 +46,11 @@ open class FloatingView: UIView {
     
     open var isSelected: Bool = false {
         didSet {
-            self.layer.borderWidth = isSelected ? 1 : 0
+            self.layer.borderWidth = isSelected ? 2 : 0
             self.pinchGesture.isEnabled = isSelected
             self.panGesture.isEnabled = isSelected
             self.rotationGesture.isEnabled = isSelected
+            edgeButtons?.forEach({$0.isHidden = !isSelected})
             if isSelected == false {
                 deleteButton.isHidden = true
             }
@@ -59,6 +61,47 @@ open class FloatingView: UIView {
         didSet {
             deleteButton.isHidden = !isShowDelete
         }
+    }
+    
+    
+    public enum EdgePositionEnum: Int {
+        case leftTop = 10000
+        case rightTop = 10001
+        case leftBottom = 10002
+        case rightBottom = 10003
+    }
+    
+    open var edgeImages = [EdgePositionEnum : UIImage?]() {
+        didSet {
+            addButtonIfNeed(tag: .leftTop, image: edgeImages[.leftTop] as? UIImage)
+            addButtonIfNeed(tag: .rightTop, image: edgeImages[.rightTop] as? UIImage)
+            addButtonIfNeed(tag: .leftBottom, image: edgeImages[.leftBottom] as? UIImage)
+            addButtonIfNeed(tag: .rightBottom, image: edgeImages[.rightBottom] as? UIImage)
+        }
+    }
+    
+    func addButtonIfNeed(tag: EdgePositionEnum, image: UIImage?) {
+        guard let button: UIButton = self.viewWithTag(tag.rawValue) as? UIButton else {
+            let button = UIButton(type: .custom)
+            button.adjustsImageWhenHighlighted = false
+            button.setImage(image, for: .normal)
+            button.tag = tag.rawValue
+//            button.clickEdgeInsets = UIEdgeInsets.init(top: 10, left: 10, bottom: 10, right: 10)
+            button.size = CGSize(width: 36, height: 36)
+            button.addTarget(self, action: #selector(ltButtonClick), for: .touchUpInside)
+            self.addSubview(button)
+            button.isHidden = true
+            return
+        }
+        if image == nil {
+            button.removeFromSuperview()
+            return
+        }
+        button.setImage(image, for: .normal)
+    }
+    
+    @objc func ltButtonClick() {
+        
     }
     
     /// 是否等比缩放.默认yes
@@ -112,6 +155,7 @@ open class FloatingView: UIView {
     
     open lazy var longGesture: UILongPressGestureRecognizer = {
         let longGesture = UILongPressGestureRecognizer(target: self, action: #selector(longAction(_ :)))
+        longGesture.minimumPressDuration = 0.2
         return longGesture
     }()
     
@@ -149,16 +193,34 @@ open class FloatingView: UIView {
     }
     
     public func configGestures() {
-        if self.isNeedPan && self.gestureRecognizers?.contains(self.panGesture) != true {
-            self.addGestureRecognizer(self.panGesture)
+        if self.isNeedPan {
+            if self.gestureRecognizers?.contains(self.panGesture) != true {
+                self.addGestureRecognizer(self.panGesture)
+            }
+        } else {
+            if self.gestureRecognizers?.contains(self.panGesture) == true {
+               self.removeGestureRecognizer(self.panGesture)
+            }
         }
         
-        if self.isNeedPinch && self.gestureRecognizers?.contains(self.pinchGesture) != true {
-            self.addGestureRecognizer(self.pinchGesture)
+        if self.isNeedPinch {
+            if self.gestureRecognizers?.contains(self.pinchGesture) != true {
+                self.addGestureRecognizer(self.pinchGesture)
+            }
+        } else {
+            if self.gestureRecognizers?.contains(self.pinchGesture) == true {
+                self.removeGestureRecognizer(self.pinchGesture)
+            }
         }
         
-        if self.isNeedRotate && self.gestureRecognizers?.contains(self.rotationGesture) != true {
-            self.addGestureRecognizer(self.rotationGesture)
+        if self.isNeedRotate {
+            if self.gestureRecognizers?.contains(self.rotationGesture) != true {
+                self.addGestureRecognizer(self.rotationGesture)
+            }
+        } else {
+            if self.gestureRecognizers?.contains(self.rotationGesture) == true {
+                self.removeGestureRecognizer(self.rotationGesture)
+            }
         }
         
         self.addGestureRecognizer(tapGesture)
@@ -215,6 +277,22 @@ open class FloatingView: UIView {
         path.addLine(to: CGPoint(x: 0, y: r))
         path.addQuadCurve(to: CGPoint(x: r, y: 0), controlPoint: CGPoint(x: 0, y: 0))
         deleteButtonLayer.path = path.cgPath
+        
+        if let btn = self.viewWithTag(EdgePositionEnum.leftTop.rawValue) {
+            btn.center = CGPoint(x: 1, y: 1)
+        }
+        
+        if let btn = self.viewWithTag(EdgePositionEnum.rightTop.rawValue) {
+            btn.center = CGPoint(x: self.bounds.width - 1, y: 1)
+        }
+        
+        if let btn = self.viewWithTag(EdgePositionEnum.leftBottom.rawValue) {
+            btn.center = CGPoint(x: 1, y: self.bounds.height - 1)
+        }
+        
+        if let btn = self.viewWithTag(EdgePositionEnum.rightBottom.rawValue) {
+            btn.center = CGPoint(x: self.bounds.width - 1, y: self.bounds.height - 1)
+        }
     }
 }
 
@@ -233,6 +311,20 @@ extension FloatingView: UIGestureRecognizerDelegate {
         return true
     }
     
+    var edgeButtons: [UIButton]? {
+        let array = self.subviews.compactMap { view in
+            if let button = view as? UIButton {
+                if button.tag == EdgePositionEnum.leftTop.rawValue ||
+                    button.tag == EdgePositionEnum.rightTop.rawValue ||
+                    button.tag == EdgePositionEnum.leftBottom.rawValue ||
+                    button.tag == EdgePositionEnum.rightBottom.rawValue  {
+                    return button
+                }
+            }
+            return nil
+        }
+        return array as? [UIButton]
+    }
     
     @objc public func pinchAction(_ pinch: UIPinchGestureRecognizer) {
         let touchCount = pinch.numberOfTouches
@@ -299,17 +391,15 @@ extension FloatingView: UIGestureRecognizerDelegate {
     
     @objc public func tapAction(_ tap: UITapGestureRecognizer) {
         if self.isSelected == true {
-            self.isShowDelete = !self.isShowDelete
+            self.delegate?.floatingViewWillEdit(view: self)
+            return
         }
         delegate?.floatingView(view: self, didSelected: true)
     }
     
     @objc public func longAction(_ long: UILongPressGestureRecognizer) {
         if long.state == .began {
-            if self.isSelected == false {
-                delegate?.floatingView(view: self, didSelected: true)
-                self.isShowDelete = true
-            } else {
+            if self.isSelected == true {
                 self.isShowDelete = true
             }
         }

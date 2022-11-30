@@ -29,12 +29,13 @@ extension UIImage {
     
     public func resizedWithGPU(size: CGSize) -> UIImage? {
         // 设置缩放比例
-        var scale: CGFloat = 1
-        if size.width != CGFLOAT_MAX {
-            scale = size.width / self.size.width
-        } else if size.height != CGFLOAT_MAX {
-            scale = size.height / self.size.height
-        }
+//        var scale: CGFloat = 1
+//        if size.width != CGFLOAT_MAX {
+//            scale = size.width / self.size.width
+//        } else if size.height != CGFLOAT_MAX {
+//            scale = size.height / self.size.height
+//        }
+        let scale = min(size.width / self.size.width, size.height / self.size.height)
                 
         let ciImage = self.ciImage != nil ? self.ciImage : CIImage.init(image: self)
         let filter = CIFilter.init(name: "CIAffineTransform", parameters: [kCIInputImageKey : ciImage as Any])
@@ -98,10 +99,13 @@ extension UIImage {
         }
         
         let rect = CGRect(x: x, y: y, width: width, height: height)
-        guard let cgImage = self.cgImage?.cropping(to: rect) else {
-            return nil
+        if let cgImage = self.cgImage, let cropCGImage = cgImage.cropping(to: rect) {
+            return UIImage(cgImage: cropCGImage)
         }
-        return UIImage(cgImage: cgImage)
+        if let ciImage = self.ciImage {
+            return UIImage(ciImage: ciImage.cropped(to: rect))
+        }
+        return nil
     }
     
     public func cropImage(rect: CGRect, scale: CGFloat = 1) -> UIImage? {
@@ -111,7 +115,8 @@ extension UIImage {
     
     public func rotation(angle: CGFloat) -> UIImage? {
         let ciContext = CIContext()
-        guard let ciImage = CIImage(image: self)?.transformed(by: CGAffineTransform.init(rotationAngle: angle)),
+        let ciImage = self.ciImage ?? CIImage(image: self)
+        guard let ciImage = ciImage?.transformed(by: CGAffineTransform.init(rotationAngle: angle)),
               let cgImage = ciContext.createCGImage(ciImage, from: ciImage.extent) else {
             return nil
         }

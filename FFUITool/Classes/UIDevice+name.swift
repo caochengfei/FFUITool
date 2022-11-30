@@ -16,7 +16,6 @@ extension UIDevice {
             guard let value = element.value as? Int8, value != 0 else { return identifier }
             return identifier + String(UnicodeScalar(UInt8(value)))
         }
-        ffPrint(identifier)
         switch identifier {
         ///iPod
         case "iPod1,1":  return "iPod Touch 1"
@@ -56,7 +55,7 @@ extension UIDevice {
         case "iPhone13,3" : return "iPhone 12 Pro"
         case "iPhone13,4" : return "iPhone 12 Pro Max"
         case "iPhone14,4" : return "iPhone 13 mini"
-        case "iPhone14,5" : return "iiPhone 13"
+        case "iPhone14,5" : return "iPhone 13"
         case "iPhone14,2" : return "iPhone 13 Pro"
         case "iPhone14,3" : return "iPhone 13 Pro Max"
         case "iPhone14,6" : return "iPhone SE3"
@@ -90,6 +89,7 @@ extension UIDevice {
         case "iPad5,3","iPad5,4" : return "iPad Air 2"
         case "iPad11,3","iPad11,4" : return "iPad Air 3"
         case "iPad13,1","iPad13,2" : return "iPad Air 4"
+        case "iPad13,16", "iPad13,17" : return "iPad Air 5"
 
         ///iPad  pro
         case "iPad6,3","iPad6,4" : return "iPad Pro (9.7-inch)"
@@ -104,10 +104,13 @@ extension UIDevice {
         case "iPad13,8","iPad13,9","iPad13,10","iPad13,11" : return "iPad Pro 5 (12.9-inch)"
 
 
-
+        // AppleTV
+        case "AppleTV1,1": return "Apple TV 1"
         case "AppleTV2,1":  return "Apple TV 2"
         case "AppleTV3,1","AppleTV3,2":  return "Apple TV 3"
         case "AppleTV5,3":  return "Apple TV 4"
+        case "AppleTV6,2": return "Apple TV 4K"
+        case "AppleTV11,1": return "Apple TV 4k"
 
 
 
