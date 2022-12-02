@@ -27,7 +27,7 @@ extension UIImage {
         }
     }
     
-    public func resizedWithGPU(size: CGSize) -> UIImage? {
+    public func resizedWithGPU(size: CGSize, outputScale: CGFloat? = UIScreen.main.nativeScale) -> UIImage? {
         // 设置缩放比例
 //        var scale: CGFloat = 1
 //        if size.width != CGFLOAT_MAX {
@@ -50,7 +50,8 @@ extension UIImage {
               let cgImage = context.createCGImage(outputImage, from: outputImage.extent) else {
             return nil
         }
-        var result = UIImage(cgImage: cgImage,scale: self.scale, orientation: self.imageOrientation)
+        let extentScale: CGFloat = outputScale ?? self.scale
+        let result = UIImage(cgImage: cgImage,scale: extentScale, orientation: self.imageOrientation)
         return result
     }
     

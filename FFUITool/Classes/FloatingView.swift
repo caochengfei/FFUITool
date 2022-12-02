@@ -11,9 +11,15 @@ public protocol FloatingViewProtocol: AnyObject {
     func floatingView(view: FloatingView, willRemove: Bool)
     func floatingView(view: FloatingView, didSelected: Bool)
     func floatingViewWillEdit(view: FloatingView)
+    func floatingViewPositionDidChanged(view: FloatingView)
 }
 
-public typealias FloatingViewClickCallback = ((_ view: FloatingView)->())
+extension FloatingViewProtocol {
+    public func floatingView(view: FloatingView, willRemove: Bool) {}
+    public func floatingView(view: FloatingView, didSelected: Bool) {}
+    public func floatingViewWillEdit(view: FloatingView) {}
+    public func floatingViewPositionDidChanged(view: FloatingView) {}
+}
 
 open class FloatingView: UIView {
     
@@ -167,6 +173,7 @@ open class FloatingView: UIView {
         button.size = CGSize(width: 72, height: 43)
         button.titleEdgeInsets = UIEdgeInsets(top: -4, left: 0, bottom: 4, right: 0)
         button.layer.addSublayer(deleteButtonLayer)
+        button.isHidden = true
         return button
     }()
     
@@ -228,7 +235,7 @@ open class FloatingView: UIView {
         longGesture.require(toFail: tapGesture)
     }
     
-    public override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+    open override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         let view = super.hitTest(point, with: event)
         if view == nil {
             let count = self.subviews.count
@@ -361,10 +368,11 @@ extension FloatingView: UIGestureRecognizerDelegate {
         pinch.scale = 1
     }
     
-    @objc public func panAction(_ pan: UIPanGestureRecognizer) {
+    @objc open func panAction(_ pan: UIPanGestureRecognizer) {
         let pt = pan.translation(in: self.superview)
         self.center = CGPoint(x: self.center.x  + pt.x, y: self.center.y + pt.y)
         pan.setTranslation(.zero, in: self.superview)
+        delegate?.floatingViewPositionDidChanged(view: self)
     }
     
     @objc public func rotationAction(_ rotation: UIRotationGestureRecognizer) {

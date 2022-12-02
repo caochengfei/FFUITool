@@ -50,11 +50,11 @@ extension UIDevice {
         case "iPhone12,3":  return "iPhone 11 Pro"
         case "iPhone12,5" : return "iPhone 11 Pro Max"
         case "iPhone12,8" : return "iPhone SE 2"
-        case "iPhone13,1" : return "iPhone 12 mini"
+        case "iPhone13,1" : return "iPhone 12 Mini"
         case "iPhone13,2" : return "iPhone 12"
         case "iPhone13,3" : return "iPhone 12 Pro"
         case "iPhone13,4" : return "iPhone 12 Pro Max"
-        case "iPhone14,4" : return "iPhone 13 mini"
+        case "iPhone14,4" : return "iPhone 13 Mini"
         case "iPhone14,5" : return "iPhone 13"
         case "iPhone14,2" : return "iPhone 13 Pro"
         case "iPhone14,3" : return "iPhone 13 Pro Max"
@@ -80,9 +80,9 @@ extension UIDevice {
         case "iPad2,5", "iPad2,6", "iPad2,7":  return "iPad Mini"
         case "iPad4,4", "iPad4,5", "iPad4,6":  return "iPad Mini 2"
         case "iPad4,7", "iPad4,8", "iPad4,9":  return "iPad Mini 3"
-        case "iPad5,1","iPad5,2" : return "iPad mini 4"
-        case "iPad11,1","iPad11,2" : return "iPad mini 5"
-        case "iPad14,1","iPad14,2" : return "iPad mini 6"
+        case "iPad5,1","iPad5,2" : return "iPad Mini 4"
+        case "iPad11,1","iPad11,2" : return "iPad Mini 5"
+        case "iPad14,1","iPad14,2" : return "iPad Mini 6"
 
         ///iPad Air
         case "iPad4,1", "iPad4,2", "iPad4,3":  return "iPad Air"
@@ -120,7 +120,7 @@ extension UIDevice {
         case "iMac21,1","iMac21,2" : return "iMac (24-inch, M1, 2021)"
 
         ///Mac mini
-        case "Macmini9,1" : return "Mac mini (M1, 2020)"
+        case "Macmini9,1" : return "Mac Mini (M1, 2020)"
 
         ///MacBook Air
         case "MacBookAir10,1" : return "MacBook Air (Late 2020)"
