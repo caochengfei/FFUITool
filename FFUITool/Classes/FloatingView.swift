@@ -165,7 +165,7 @@ open class FloatingView: UIView {
         return longGesture
     }()
     
-    lazy var deleteButton: UIButton = {
+    public lazy var deleteButton: UIButton = {
         let button = UIButton(type: .custom)
         button.setTitle("Delete", for: .normal)
         button.clickEdgeInsets = UIEdgeInsets.init(top: 10, left: 10, bottom: 10, right: 10)
@@ -197,6 +197,22 @@ open class FloatingView: UIView {
     
     public required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    open func containsPoint(point: CGPoint) -> UIView? {
+        if self.isShowDelete == true {
+            let p = deleteButton.convert(point, from: self)
+            if deleteButton.bounds.contains(p) {
+                return deleteButton
+            } else if self.bounds.contains(point) {
+                return self
+            }
+        } else {
+            if self.bounds.contains(point) {
+                return self
+            }
+        }
+        return nil
     }
     
     public func configGestures() {

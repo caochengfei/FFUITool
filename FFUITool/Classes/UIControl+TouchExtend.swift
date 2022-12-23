@@ -24,16 +24,16 @@ extension UIControl {
     
     // 重写系统方法修改点击区域
     open override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-      super.point(inside: point, with: event)
-      var bounds = self.bounds
-      if (clickEdgeInsets != nil) {
-          let x: CGFloat = -(clickEdgeInsets?.left ?? 0)
-          let y: CGFloat = -(clickEdgeInsets?.top ?? 0)
-          let width: CGFloat = bounds.width + (clickEdgeInsets?.left ?? 0) + (clickEdgeInsets?.right ?? 0)
-          let height: CGFloat = bounds.height + (clickEdgeInsets?.top ?? 0) + (clickEdgeInsets?.bottom ?? 0)
-          bounds = CGRect(x: x, y: y, width: width, height: height) //负值是方法响应范围
-      }
-      return bounds.contains(point)
+        var bounds = self.bounds
+        if (clickEdgeInsets != nil), self.isHidden == false, self.alpha > 0 {
+            let x: CGFloat = -(clickEdgeInsets?.left ?? 0)
+            let y: CGFloat = -(clickEdgeInsets?.top ?? 0)
+            let width: CGFloat = bounds.width + (clickEdgeInsets?.left ?? 0) + (clickEdgeInsets?.right ?? 0)
+            let height: CGFloat = bounds.height + (clickEdgeInsets?.top ?? 0) + (clickEdgeInsets?.bottom ?? 0)
+            bounds = CGRect(x: x, y: y, width: width, height: height) //负值是方法响应范围
+            return bounds.contains(point)
+        }
+        return super.point(inside: point, with: event)
     }
 }
 
