@@ -14,7 +14,7 @@ extension UIImage {
         guard let cgImage = self.cgImage else {
             return nil
         }
-        let scale = 8 * size.width / UIScreen.main.bounds.width
+        let scale = 30 * size.width / UIScreen.main.bounds.width
         
         let inputImage = CIImage(cgImage: cgImage)
         let filter = CIFilter(name: "CIPixellate")

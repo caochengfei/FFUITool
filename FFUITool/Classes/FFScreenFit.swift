@@ -198,7 +198,7 @@ open class DeviceDisplayPixel {
         }
         return false
     }
-    
+
     
     /// 大于xr的width基本都是全面屏截屏
     /// - Parameter size: imageSize (pixel)
@@ -262,8 +262,8 @@ open class DeviceDisplayPixel {
                 )
             case 1170:
                 return (
-                    CGRect(x: 25 / size.width, y: 30 / size.height, width: 220 / size.width, height: 100 / size.height),
-                    CGRect(x: (size.width - 285) / size.width, y: 30 / size.height, width: 255 / size.width, height: 70 / size.height),
+                    CGRect(x: 25 / size.width, y: 30 / size.height, width: 240 / size.width, height: 100 / size.height),
+                    CGRect(x: (size.width - 315) / size.width, y: 30 / size.height, width: 280 / size.width, height: 70 / size.height),
                     nil
                 )
             case 1179:

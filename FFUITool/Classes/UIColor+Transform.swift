@@ -164,6 +164,13 @@ extension UIColor {
     public var isCleanColor: Bool {
         return self == UIColor.clear || self.sRGB.alpha == 0
     }
+    
+    public var isWhiteColor: Bool {
+        if self == UIColor.white {
+            return true
+        }
+        return self.sRGB.red == 1 && self.sRGB.green == 1 && self.sRGB.blue == 1 && self.sRGB.alpha == 1
+    }
 }
 
 
