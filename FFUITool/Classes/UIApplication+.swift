@@ -50,6 +50,7 @@ extension UIViewController {
     }
 }
 
+@available(iOSApplicationExtension, unavailable, message: "This method is NS_EXTENSION_UNAVAILABLE.")
 extension UIApplication {
     /// EZSE: Run a block in background after app resigns activity
     public func runInBackground(_ closure: @escaping () -> Void, expirationHandler: (() -> Void)? = nil) {
