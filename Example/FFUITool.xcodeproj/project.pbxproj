@@ -42,10 +42,10 @@
 		607FACEB1AFB9204008FA782 /* Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tests.swift; sourceTree = "<group>"; };
 		63A6BF385AAC0232C7378C41 /* Pods-FFUITool_Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FFUITool_Tests.release.xcconfig"; path = "Target Support Files/Pods-FFUITool_Tests/Pods-FFUITool_Tests.release.xcconfig"; sourceTree = "<group>"; };
 		719764A6C2A217F153C565B6 /* Pods-FFUITool_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FFUITool_Tests.debug.xcconfig"; path = "Target Support Files/Pods-FFUITool_Tests/Pods-FFUITool_Tests.debug.xcconfig"; sourceTree = "<group>"; };
-		926A7D282FA524F7287385AF /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; name = README.md; path = ../README.md; sourceTree = "<group>"; };
-		A0B464725EFDB62C12E43A86 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		926A7D282FA524F7287385AF /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		A0B464725EFDB62C12E43A86 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		C0C23F04230FE3A0B402EC70 /* Pods-FFUITool_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FFUITool_Example.debug.xcconfig"; path = "Target Support Files/Pods-FFUITool_Example/Pods-FFUITool_Example.debug.xcconfig"; sourceTree = "<group>"; };
-		DD27C9DC0AFA387818BE5D2E /* FFUITool.podspec */ = {isa = PBXFileReference; includeInIndex = 1; name = FFUITool.podspec; path = ../FFUITool.podspec; sourceTree = "<group>"; };
+		DD27C9DC0AFA387818BE5D2E /* FFUITool.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = FFUITool.podspec; path = ../FFUITool.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		E00B74F67186D98632579674 /* Pods_FFUITool_Tests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FFUITool_Tests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -77,7 +77,6 @@
 				719764A6C2A217F153C565B6 /* Pods-FFUITool_Tests.debug.xcconfig */,
 				63A6BF385AAC0232C7378C41 /* Pods-FFUITool_Tests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -228,6 +227,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -271,10 +271,12 @@
 			inputPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-FFUITool_Example/Pods-FFUITool_Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/FFUITool/FFUITool.framework",
+				"${BUILT_PRODUCTS_DIR}/SnapKit/SnapKit.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FFUITool.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SnapKit.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;

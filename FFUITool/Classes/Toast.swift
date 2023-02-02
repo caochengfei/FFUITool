@@ -157,6 +157,7 @@ open class Toast: UIView {
         }
         Toast.sharedLabel.center = CGPoint(x: self.width * 0.5, y: self.height * 0.5)
     }
+
     
     fileprivate func show() {
         UIView.animate(withDuration: 0.25, delay: 0.0, options: .curveEaseInOut, animations: {
@@ -179,4 +180,11 @@ open class Toast: UIView {
         }
     }
 }
+
+public func showToast(msg: String) {
+    Toast.show(with: msg,
+               positionCenterY: UIScreen.main.bounds.height - kBottomSafeHeight - 40.px,
+               font: UIFont.systemFont(ofSize: 15))
+}
+
 

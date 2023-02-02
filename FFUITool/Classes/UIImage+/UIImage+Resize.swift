@@ -61,7 +61,7 @@ extension UIImage {
     public func resized(with width: CGFloat) -> UIImage? {
         let ratio = width / self.size.width
         let height = self.size.height * ratio
-        return resized(size: CGSize(width: width, height: height))
+        return resized(size: CGSize(width: floor(width), height: floor(height)))
     }
     
     
