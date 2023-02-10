@@ -36,7 +36,7 @@ extension UIScrollView {
         self.contentScroll(scrollView: scrollView, pageDrawIndex: 0, maxIndex: Int(maxIndex), scale: scale, resultImage: &resultImage, progressHandle: progressHandle) { image in
             scrollView.setContentOffset(scrollOffset, animated: false)
             captureComplated(image)
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.2) {
                 snapShotView.removeFromSuperview()
             }
         }
@@ -48,7 +48,7 @@ extension UIScrollView {
         let pageSize = CGSize(width: scrollView.frame.width, height: scrollView.frame.height)
         let splitRect = CGRect(origin: CGPoint(x: 0, y: CGFloat(pageDrawIndex) * scrollView.frame.size.height), size: pageSize)
         var resultImage = resultImage
-        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.1) {
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.2) {
             UIGraphicsBeginImageContextWithOptions(pageSize, true, UIScreen.main.scale)
             scrollView.drawHierarchy(in: CGRect(origin: .zero, size: pageSize), afterScreenUpdates: false)
             let image = UIGraphicsGetImageFromCurrentImageContext()?.resized(with: pageSize.width * scale)

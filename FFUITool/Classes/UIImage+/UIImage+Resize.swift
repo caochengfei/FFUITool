@@ -29,12 +29,6 @@ extension UIImage {
     
     public func resizedWithGPU(size: CGSize, outputScale: CGFloat? = UIScreen.main.nativeScale) -> UIImage? {
         // 设置缩放比例
-//        var scale: CGFloat = 1
-//        if size.width != CGFLOAT_MAX {
-//            scale = size.width / self.size.width
-//        } else if size.height != CGFLOAT_MAX {
-//            scale = size.height / self.size.height
-//        }
         let scale = min(size.width / self.size.width, size.height / self.size.height)
                 
         let ciImage = self.ciImage != nil ? self.ciImage : CIImage.init(image: self)
@@ -77,6 +71,7 @@ extension UIImage {
             kCGImageSourceShouldCacheImmediately: true,
             kCGImageSourceThumbnailMaxPixelSize: max(size.width, size.height)
         ]
+        
         
         guard let imageSource = CGImageSourceCreateWithURL(url as CFURL, nil),
               let image = CGImageSourceCreateThumbnailAtIndex(imageSource, 0, options as CFDictionary) else {
