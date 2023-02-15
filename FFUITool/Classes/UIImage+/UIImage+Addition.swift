@@ -51,3 +51,29 @@ extension UIImage {
         return nil
     }
 }
+
+
+extension UIImage {
+    @available(iOS 13.0, *)
+    public static func systedName(name: String, fontSize: CGFloat, weight: UIImage.SymbolWeight, color: UIColor = .white) -> UIImage {
+        let config = UIImage.SymbolConfiguration(pointSize: fontSize, weight: UIImage.SymbolWeight.semibold, scale: SymbolScale.medium)
+        let image = UIImage(systemName: name, withConfiguration: config)
+        return image ?? UIImage()
+    }
+    
+    public convenience init(color: UIColor) {
+        let rect = CGRect(origin: .zero, size: CGSize(width: 1, height: 1))
+        UIGraphicsBeginImageContext(rect.size)
+        let context = UIGraphicsGetCurrentContext()
+        context?.setFillColor(color.cgColor)
+        context?.fill(rect)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        context?.endPage()
+        guard let data = image?.pngData() else {
+            self.init()
+            return
+        }
+        self.init(data: data)!
+    }
+}
