@@ -159,6 +159,10 @@ extension WKWebView {
                 element.style.cssText='visibility:hidden;'
                 flexdDiv.push(element);
             }
+            if (position == 'sticky') {
+                element.style.cssText='visibility:hidden;'
+                flexdDiv.push(element);
+            }
         }
         for (let element of navArray) {
             var position = window.getComputedStyle(element,null).position;
@@ -166,10 +170,18 @@ extension WKWebView {
                 element.style.cssText='visibility:hidden;'
                 flexdDiv.push(element);
             }
+            if (position == 'sticky') {
+                element.style.cssText='visibility:hidden;'
+                flexdDiv.push(element);
+            }
         }
         for (let element of asideArray) {
             var position = window.getComputedStyle(element,null).position;
             if (position == 'fixed') {
+                element.style.cssText='visibility:hidden;'
+                flexdDiv.push(element);
+            }
+            if (position == 'sticky') {
                 element.style.cssText='visibility:hidden;'
                 flexdDiv.push(element);
             }
