@@ -35,8 +35,10 @@ open class FFNavigationBar: UIView {
         //        } else {
         //            button.setImage(UIImage(named: "back_black"), for: .normal)
         //        }
+        let image = UIImage(named: "back_black")
         button.setTitleColor(UIColor.black.dynamicWhite, for: .normal)
-        button.setImage(UIImage(named: "back_black")?.withRenderingMode(.alwaysTemplate), for: .normal)
+//        button.setImage(UIImage(named: "back_black")?.withRenderingMode(.alwaysTemplate), for: .normal)
+        button.setImage(image, for: .normal)
         button.setTitle(nil, for: .normal)
         button.tintColor = "#222222".toRGB.dynamicWhite
         button.adjustsImageWhenHighlighted = false
