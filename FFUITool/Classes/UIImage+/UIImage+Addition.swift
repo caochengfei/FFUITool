@@ -61,6 +61,13 @@ extension UIImage {
         return image ?? UIImage()
     }
     
+    @available(iOS 13.0, *)
+    public static func systedName(name: String, font: UIFont?) -> UIImage {
+        let config = UIImage.SymbolConfiguration(font: font ?? UIFont.systemFont(ofSize: 14))
+        let image = UIImage(systemName: name,withConfiguration: config)
+        return image ?? UIImage()
+    }
+    
     public convenience init(color: UIColor) {
         let rect = CGRect(origin: .zero, size: CGSize(width: 1, height: 1))
         UIGraphicsBeginImageContext(rect.size)

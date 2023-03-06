@@ -181,10 +181,12 @@ open class Toast: UIView {
     }
 }
 
-public func showToast(msg: String) {
+public func showToast(msg: String, withCenter: Bool = false) {
+    let centerY = withCenter ? UIScreen.main.bounds.height / 2 :  UIScreen.main.bounds.height - kBottomSafeHeight - 40.px
     Toast.show(with: msg,
-               positionCenterY: UIScreen.main.bounds.height - kBottomSafeHeight - 40.px,
+               positionCenterY: centerY,
                font: UIFont.systemFont(ofSize: 15))
 }
+
 
 
