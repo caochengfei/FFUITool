@@ -28,16 +28,8 @@ open class FFNavigationBar: UIView {
     
     public lazy var backButton: UIButton = {
         let button = UIButton(type: .custom)
-        //        if #available(iOS 14, *) {
-        //            let image = UIImage.systedName(name: "chevron.backward", fontSize: 20, weight: UIImage.SymbolWeight.medium)
-        //            button.setImage(image, for: .normal)
-        //            button.tintColor = UIColor.black.dynamicWhite
-        //        } else {
-        //            button.setImage(UIImage(named: "back_black"), for: .normal)
-        //        }
         let image = UIImage(named: "back_black")
         button.setTitleColor(UIColor.black.dynamicWhite, for: .normal)
-//        button.setImage(UIImage(named: "back_black")?.withRenderingMode(.alwaysTemplate), for: .normal)
         button.setImage(image, for: .normal)
         button.setTitle(nil, for: .normal)
         button.tintColor = "#222222".toRGB.dynamicWhite
@@ -50,13 +42,6 @@ open class FFNavigationBar: UIView {
     
     public lazy var rightButton: UIButton = {
         let button = UIButton(type: .custom)
-        //        if #available(iOS 13, *) {
-        //            let image = UIImage.systedName(name: "square.and.arrow.up", fontSize: 20, weight: UIImage.SymbolWeight.medium)
-        //            button.setImage(image, for: .normal)
-        //            button.tintColor = UIColor.black.dynamicWhite
-        //        } else {
-        //            button.setImage(UIImage(named: "share_black"), for: .normal)
-        //        }
         button.setImage(UIImage(named: "share_black")?.withRenderingMode(.alwaysTemplate), for: .normal)
         button.setTitle(nil, for: .normal)
         button.tintColor = "#222222".toRGB.dynamicWhite
@@ -129,7 +114,7 @@ open class FFNavigationBar: UIView {
         super.init(frame: frame)
         self.itemBottomSpacing = itemBottomSpacing
         // 适配下药丸屏幕
-        if UIDevice.deviceName == "iPhone 14 Pro" || UIDevice.deviceName == "iPhone 14 Pro Max" {
+        if UIDevice.deviceName == "iPhone 14 Pro" || UIDevice.deviceName == "iPhone 14 Pro Max", itemBottomSpacing == 12 {
             self.itemBottomSpacing = 8
         }
         self.backButtonFont = font

@@ -18,7 +18,7 @@ open class FFSliderValueView: UIView {
         }
     }
     
-    lazy var label: UILabel = {
+    public lazy var label: UILabel = {
         let label = UILabel()
         label.textColor = "#19B2FF".toRGB
         label.font = UIFont(name: "", size: 17) ?? UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.semibold)
@@ -126,7 +126,7 @@ open class FFSliderView: UIView {
         }
     }
     
-    private var sliderValueView: FFSliderValueView?
+    public var sliderValueView: FFSliderValueView?
         
     public override init(frame: CGRect) {
         super.init(frame: frame)
@@ -173,13 +173,13 @@ open class FFSliderView: UIView {
         leftImageView.snp.makeConstraints { make in
             make.left.equalToSuperview()
             make.centerY.equalToSuperview()
-            make.width.height.lessThanOrEqualTo(40)
+            make.size.equalTo(CGSize(width: 40, height: 40))
         }
         
         rightImageView.snp.makeConstraints { make in
             make.right.equalToSuperview()
             make.centerY.equalToSuperview()
-            make.width.height.lessThanOrEqualTo(40)
+            make.size.equalTo(CGSize(width: 40, height: 40))
         }
         
         slider.snp.makeConstraints { make in

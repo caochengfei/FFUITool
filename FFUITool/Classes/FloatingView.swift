@@ -161,7 +161,7 @@ open class FloatingView: UIView {
     
     open lazy var longGesture: UILongPressGestureRecognizer = {
         let longGesture = UILongPressGestureRecognizer(target: self, action: #selector(longAction(_ :)))
-        longGesture.minimumPressDuration = 0.2
+        longGesture.minimumPressDuration = 0.6
         return longGesture
     }()
     
@@ -248,7 +248,7 @@ open class FloatingView: UIView {
         
         self.addGestureRecognizer(tapGesture)
         self.addGestureRecognizer(longGesture)
-        longGesture.require(toFail: tapGesture)
+//        longGesture.require(toFail: tapGesture)
     }
     
     open override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
@@ -414,7 +414,7 @@ extension FloatingView: UIGestureRecognizerDelegate {
     }
     
     @objc public func tapAction(_ tap: UITapGestureRecognizer) {
-        if self.isSelected == true {
+        if self.isSelected == true, isShowDelete == false {
             self.delegate?.floatingViewWillEdit(view: self)
             return
         }
