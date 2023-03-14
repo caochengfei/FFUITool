@@ -103,7 +103,7 @@ open class LoadingView: UIView {
         super.layoutSubviews()
         let loadingPointY = self.title != nil ? contentView.width / 2 - 15 : contentView.height / 2
         let loadingLayerHeight = self.title != nil ? contentView.width - 30 : contentView.width
-        let backgroundPath = UIBezierPath(arcCenter: CGPoint(x: contentView.width / 2, y: loadingPointY), radius: contentView.bounds.width / 4, startAngle: CGFloat.pi, endAngle: CGFloat.pi * 4, clockwise: true)
+        let backgroundPath = UIBezierPath(arcCenter: CGPoint(x: contentView.width / 2, y: loadingPointY), radius: contentView.bounds.width / 4, startAngle: -CGFloat.pi / 2.0, endAngle: CGFloat.pi * 3 / 2.0, clockwise: true)
         self.backgroundLayer.frame = CGRect(origin: .zero, size: CGSize(width: contentView.width, height: loadingLayerHeight))
         self.loadingLayer.frame = backgroundLayer.frame
         self.backgroundLayer.path = backgroundPath.cgPath
@@ -173,7 +173,7 @@ open class LoadingView: UIView {
             let view = view ?? UIApplication.shared.keyWindow
             let loadingView = view?.viewWithTag(233333) as? LoadingView
             loadingView?.loadingLayer.strokeEnd = 1.0
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()) {
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.22) {
                 loadingView?.endAnimate()
                 loadingView?.removeFromSuperview()
             }
@@ -187,5 +187,10 @@ open class LoadingView: UIView {
             let loadingView = view?.viewWithTag(233333) as? LoadingView
             loadingView?.loadingLayer.strokeEnd = min(max(0.1, progress), 1)
         }
+    }
+    
+    open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        backgroundLayer.strokeColor = UIColor.black.dynamicWhite.withAlphaComponent(0.2).cgColor
+        loadingLayer.strokeColor = UIColor.black.dynamicWhite.cgColor
     }
 }
