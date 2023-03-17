@@ -182,11 +182,28 @@ open class LoadingView: UIView {
     }
     
     public class func setProgress(with view: UIView? = nil, progress: CGFloat) {
-        DispatchQueue.main.async {
+        if Thread.isMainThread {
             let view = view ?? UIApplication.shared.keyWindow
             let loadingView = view?.viewWithTag(233333) as? LoadingView
-            loadingView?.loadingLayer.strokeEnd = min(max(0.1, progress), 1)
+            if let loadingView = loadingView {
+                CATransaction.begin()
+                CATransaction.setAnimationDuration(0.2)
+                loadingView.loadingLayer.strokeEnd = max(min(max(0.1, progress), 1), loadingView.loadingLayer.strokeEnd)
+                CATransaction.commit()
+            }
+        } else {
+            DispatchQueue.main.async {
+                let view = view ?? UIApplication.shared.keyWindow
+                let loadingView = view?.viewWithTag(233333) as? LoadingView
+                if let loadingView = loadingView {
+                    CATransaction.begin()
+                    CATransaction.setAnimationDuration(0.2)
+                    loadingView.loadingLayer.strokeEnd = max(min(max(0.1, progress), 1), loadingView.loadingLayer.strokeEnd)
+                    CATransaction.commit()
+                }
+            }
         }
+     
     }
     
     open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {

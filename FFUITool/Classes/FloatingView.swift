@@ -26,7 +26,7 @@ open class FloatingView: UIView {
     public var id: String = UUID().uuidString
     
     public weak var delegate: FloatingViewProtocol?
-            
+                
     /// 是否需要平移
     open var isNeedPan: Bool = true {
         didSet {
@@ -113,6 +113,9 @@ open class FloatingView: UIView {
     /// 是否等比缩放.默认yes
     open var scaleFit: Bool = true
     
+    open var pinchScale: CGFloat = 1.0
+    
+    open var image: UIImage?
     /// 显示内容 uiview/uitextview/uiimageview 等
     open var contentView: UIView? {
         didSet {
@@ -122,6 +125,7 @@ open class FloatingView: UIView {
             contentView?.isUserInteractionEnabled = false
             
             if let contentView = contentView {
+                contentView.size = CGSize(width: contentView.width * pinchScale, height: contentView.height * pinchScale)
                 self.frame = contentView.frame
                 self.center = center
                 contentView.frame = self.bounds
@@ -382,6 +386,7 @@ extension FloatingView: UIGestureRecognizerDelegate {
         self.center = CGPoint(x: self.center.x + (self.center.x - oPoint.x), y: self.center.y + (self.center.y - oPoint.y))
         
         pinch.scale = 1
+        pinchScale = (contentView?.width ?? 1) / (image?.size.width ?? 1)
     }
     
     @objc open func panAction(_ pan: UIPanGestureRecognizer) {

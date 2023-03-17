@@ -13,7 +13,6 @@ extension UIImage {
         case vertical = 0
         case horizontal = 1
     }
-    
     /// 图像拼接
     /// - Parameters:
     ///   - image: 需要拼接的图像
