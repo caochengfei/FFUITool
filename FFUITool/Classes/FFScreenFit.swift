@@ -293,7 +293,7 @@ open class DeviceDisplayPixel {
             default:
                 return (
                     CGRect(x: 25 / size.width, y: 25 / size.height, width: 270 / size.width, height: 100 / size.height),
-                    CGRect(x: (size.width - 250) / size.width, y: 25 / size.height, width: 250 / size.width, height: 60 / size.height),
+                    CGRect(x: (size.width - 270) / size.width, y: 25 / size.height, width: 250 / size.width, height: 80 / size.height),
                     nil
                 )
             }
