@@ -32,7 +32,7 @@ extension String {
     public func textRect(size: CGSize, font: UIFont, alignment: NSTextAlignment) -> CGRect {
         let str = self as NSString
         let param = NSMutableParagraphStyle()
-        param.alignment = alignment
+        param.alignment = .left
         let attributes = [NSAttributedString.Key.font : font, NSAttributedString.Key.paragraphStyle : param]
         let labelSize = str.boundingRect(with: size, options: .usesLineFragmentOrigin, attributes: attributes, context: nil).size
         let newSize = CGSize(width: labelSize.width + 8 * 2, height: labelSize.height)
