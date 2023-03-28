@@ -57,6 +57,8 @@ open class LoadingView: UIView {
         return button
     }()
     
+    public var safeTouch: UIEdgeInsets = .zero
+    
     public var title: String? {
         didSet {
             closeButton.setTitle(title, for: .normal)
@@ -99,6 +101,13 @@ open class LoadingView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    open override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        if point.x < safeTouch.left || point.y < safeTouch.top || point.y > self.height - safeTouch.bottom || point.x > self.height - safeTouch.right {
+            return nil
+        }
+        return super.hitTest(point, with: event)
+    }
+    
     public override func layoutSubviews() {
         super.layoutSubviews()
         let loadingPointY = self.title != nil ? contentView.width / 2 - 15 : contentView.height / 2
@@ -135,7 +144,7 @@ open class LoadingView: UIView {
     
     public var canceldCallback: (()->())?
     
-    public class func show(with view: UIView? = nil, canceled: (()->())? = nil) {
+    public class func show(with view: UIView? = nil, safeTouch: UIEdgeInsets = .zero, canceled: (()->())? = nil) {
         LoadingView.hide(with: view)
         DispatchQueue.main.async {
             guard let view = view ?? UIApplication.shared.keyWindow else {
@@ -146,6 +155,7 @@ open class LoadingView: UIView {
             loadingView.tag = 233333
             loadingView.contentView.size = CGSize(width: 150, height: 150)
             loadingView.contentView.center = CGPoint(x: view.width / 2, y: view.height / 2)
+            loadingView.safeTouch = safeTouch
             view.addSubview(loadingView)
             loadingView.startAnimate()
         }

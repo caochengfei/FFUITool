@@ -181,7 +181,8 @@ open class Toast: UIView {
     }
 }
 
-public func showToast(msg: String, withCenter: Bool = false) {
+public func showToast(msg: String?, withCenter: Bool = false) {
+    guard let msg = msg else {return}
     let centerY = withCenter ? UIScreen.main.bounds.height / 2 :  UIScreen.main.bounds.height - kBottomSafeHeight - 40.px
     Toast.show(with: msg,
                positionCenterY: centerY,

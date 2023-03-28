@@ -48,6 +48,12 @@ open class FloatingView: UIView {
         }
     }
     
+    open var isNeedTap: Bool = true {
+        didSet {
+            configGestures()
+        }
+    }
+    
     var lastRotation: CGFloat = 0
     
     open var isSelected: Bool = false {
@@ -250,7 +256,13 @@ open class FloatingView: UIView {
             }
         }
         
-        self.addGestureRecognizer(tapGesture)
+        if self.isNeedTap {
+            if self.gestureRecognizers?.contains(self.tapGesture) != true {
+                self.addGestureRecognizer(self.tapGesture)
+            }
+        } else {
+            self.removeGestureRecognizer(self.tapGesture)
+        }
         self.addGestureRecognizer(longGesture)
 //        longGesture.require(toFail: tapGesture)
     }
