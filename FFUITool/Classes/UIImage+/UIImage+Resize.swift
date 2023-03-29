@@ -80,6 +80,22 @@ extension UIImage {
         return UIImage(cgImage: image)
     }
     
+    public static func decoderImage(at url: URL) -> UIImage? {
+        let options: [CFString : Any] = [
+            kCGImageSourceCreateThumbnailFromImageIfAbsent: true,
+            kCGImageSourceCreateThumbnailWithTransform: true,
+            kCGImageSourceShouldCacheImmediately: true,
+        ]
+        
+        
+        guard let imageSource = CGImageSourceCreateWithURL(url as CFURL, nil),
+              let image = CGImageSourceCreateImageAtIndex(imageSource, 0, options as CFDictionary) else {
+            return nil
+        }
+        return UIImage(cgImage: image)
+    }
+
+    
     public func cropImage(boxRect: CGRect, scale: CGFloat = 1) -> UIImage? {
         let x = boxRect.origin.x * self.size.width * scale
         let y = boxRect.origin.y * self.size.height * scale
