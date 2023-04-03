@@ -195,11 +195,26 @@ extension CGColor {
         }
         return components[2]
     }
+}
+
+extension UIColor {
+    var coreImageColor: CIColor {
+        return CIColor(color: self)
+    }
+    
+    public var red: CGFloat {
+        return coreImageColor.red
+    }
+    
+    public var green: CGFloat {
+        return coreImageColor.green
+    }
+    
+    public var blue: CGFloat {
+        return coreImageColor.blue
+    }
     
     public var alpha: CGFloat {
-        guard let components = components, components.count == 4 else {
-            return 0
-        }
-        return components[3]
+        return coreImageColor.alpha
     }
 }
