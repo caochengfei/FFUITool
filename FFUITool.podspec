@@ -40,5 +40,13 @@ TODO: Add long description of the pod here.
   # s.public_header_files = 'Pod/Classes/**/*.h'
   # s.frameworks = 'UIKit', 'MapKit'
    s.dependency 'SnapKit'
+   
+   # pod spec lint FFUITool.podspec --verbose --allow-warnings
+   
+   # 发布到私有库
+   #pod repo push FFUITool FFUITool.podspec --allow-warnings --verbose --use-libraries --skip-tests --use-modular-headers --skip-import-validation
+   
+   #发布到公共库
+   #pod trunk push FFUITool.podspec --allow-warnings --use-libraries
 
 end
