@@ -41,6 +41,8 @@ TODO: Add long description of the pod here.
   # s.frameworks = 'UIKit', 'MapKit'
    s.dependency 'SnapKit'
    
+   #pod spec lint --sources='https://github.com/CocoaPods/Specs.git' --allow-warnings
+   
    #pod repo push FFUITool FFUITool.podspec --allow-warnings --verbose --use-libraries --skip-tests --use-modular-headers --skip-import-validation
 
 end
