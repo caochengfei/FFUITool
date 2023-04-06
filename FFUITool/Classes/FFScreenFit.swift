@@ -63,17 +63,30 @@ extension FFScreenFit {
          */
         
         if #available(iOS 15.0, *) {
-            guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene, let window = windowScene.windows.first else {
+            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene, let window = windowScene.windows.first {
+                if window.safeAreaInsets.bottom > 0 {
+                    return true
+                }
                 return false
             }
-            if window.safeAreaInsets.bottom > 0 {
-               return true
-            }
-        } else {
-            // Fallback on earlier versions
-            let window = UIApplication.shared.windows.first
+        }
+        
+        if let window = UIApplication.shared.windows.first {
             if #available(iOS 11.0, *) {
-                if window?.safeAreaInsets.bottom ?? 0 > 0 {
+                if window.safeAreaInsets.bottom > 0 {
+                    return true
+                } else {
+                    return false
+                }
+            } else {
+                // Fallback on earlier versions
+                return false
+            }
+        }
+        
+        if let window = UIApplication.shared.keyWindow {
+            if #available(iOS 11.0, *) {
+                if window.safeAreaInsets.bottom > 0 {
                     return true
                 } else {
                     return false

@@ -171,7 +171,7 @@ open class FloatingView: UIView {
     
     open lazy var longGesture: UILongPressGestureRecognizer = {
         let longGesture = UILongPressGestureRecognizer(target: self, action: #selector(longAction(_ :)))
-        longGesture.minimumPressDuration = 0.6
+        longGesture.minimumPressDuration = 0.4
         return longGesture
     }()
     
@@ -183,6 +183,7 @@ open class FloatingView: UIView {
         button.size = CGSize(width: 72, height: 43)
         button.titleEdgeInsets = UIEdgeInsets(top: -4, left: 0, bottom: 4, right: 0)
         button.layer.addSublayer(deleteButtonLayer)
+        button.titleLabel?.font = UIFont(name: "SFProText-Regular", size: 14) ?? UIFont.systemFont(ofSize: 14, weight: .regular)
         button.isHidden = true
         return button
     }()
