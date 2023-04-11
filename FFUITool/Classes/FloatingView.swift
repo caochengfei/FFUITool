@@ -183,7 +183,7 @@ open class FloatingView: UIView {
         button.size = CGSize(width: 72, height: 43)
         button.titleEdgeInsets = UIEdgeInsets(top: -4, left: 0, bottom: 4, right: 0)
         button.layer.addSublayer(deleteButtonLayer)
-        button.titleLabel?.font = UIFont(name: "SFProText-Regular", size: 14) ?? UIFont.systemFont(ofSize: 14, weight: .regular)
+        button.titleLabel?.font = UIFont.systemFont(ofSize: 14, weight: .regular)
         button.isHidden = true
         return button
     }()

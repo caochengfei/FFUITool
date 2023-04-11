@@ -183,9 +183,9 @@ open class FFSliderView: UIView {
         }
         
         slider.snp.makeConstraints { make in
-            make.left.equalTo(leftImageView.snp.right).offset(10.px)
+            make.left.equalTo(leftImageView.snp.right).offset(10.rem)
             make.centerY.equalTo(leftImageView)
-            make.right.equalTo(rightImageView.snp.left).offset(-10.px)
+            make.right.equalTo(rightImageView.snp.left).offset(-10.rem)
         }
     }
     

@@ -10,7 +10,7 @@ import Foundation
 // default time
 public let toastShowDefaultDuration: TimeInterval = 2.0
 
-private let sideSpace: CGFloat = 20.px
+private let sideSpace: CGFloat = 20.rem
 
 private let maxToastWidth = kScreenWidth - sideSpace * 2.0
 
@@ -95,7 +95,7 @@ open class Toast: UIView {
     var position: ToastPositionType
     var positionCenterY: CGFloat?
     var targetFont: UIFont
-    fileprivate let margin = 10.px
+    fileprivate let margin = 10.rem
     
     init(text: String,
          duration: TimeInterval?,
@@ -131,14 +131,14 @@ open class Toast: UIView {
         self.text = text
         Toast.sharedLabel.text = text
         Toast.sharedLabel.numberOfLines = 0
-        var textWidth = text.textWidth(font: targetFont) + 34.px
+        var textWidth = text.textWidth(font: targetFont) + 34.rem
         if textWidth > maxToastWidth {
             textWidth = maxToastWidth
         }
-        let textHeight = text.textHeight(width: textWidth, font: targetFont) + 13.px
+        let textHeight = text.textHeight(width: textWidth, font: targetFont) + 13.rem
         var corner = textHeight / 2
-        if corner > 15.px {
-            corner = 15.px
+        if corner > 15.rem {
+            corner = 15.rem
         }
         layer.cornerRadius = corner
         let finalSize = CGSize(width: textWidth, height: textHeight)
@@ -150,7 +150,7 @@ open class Toast: UIView {
             bottom = positionBottom
         } else {
             if position == .bottom {
-                bottom = kScreenHeight - 20.px
+                bottom = kScreenHeight - 20.rem
             } else {
                 centerY = kScreenHeight / 2
             }
@@ -183,7 +183,7 @@ open class Toast: UIView {
 
 public func showToast(msg: String?, withCenter: Bool = false) {
     guard let msg = msg else {return}
-    let centerY = withCenter ? UIScreen.main.bounds.height / 2 :  UIScreen.main.bounds.height - kBottomSafeHeight - 40.px
+    let centerY = withCenter ? UIScreen.main.bounds.height / 2 :  UIScreen.main.bounds.height - kBottomSafeHeight - 40.rem
     Toast.show(with: msg,
                positionCenterY: centerY,
                font: UIFont.systemFont(ofSize: 15))

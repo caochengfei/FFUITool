@@ -102,25 +102,25 @@ extension FFScreenFit {
 
 //MARK: - transform px
 extension Double {
-    public var px: Double {
+    public var rem: Double {
         return FFScreenFit.instance().getPx(size: CGFloat(self))
     }
 }
 
 extension Float {
-    public var px: Float {
+    public var rem: Float {
         return Float(FFScreenFit.instance().getPx(size: CGFloat(self)))
     }
 }
 
 extension CGFloat {
-    public var px: CGFloat {
+    public var rem: CGFloat {
         return CGFloat(FFScreenFit.instance().getPx(size: CGFloat(self)))
     }
 }
 
 extension Int {
-    public var px: Int {
+    public var rem: Int {
         return Int(FFScreenFit.instance().getPx(size: CGFloat(self)))
     }
 }
