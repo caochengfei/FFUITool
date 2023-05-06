@@ -30,8 +30,15 @@ extension UIImage {
     public func resizedWithGPU(size: CGSize, outputScale: CGFloat? = UIScreen.main.nativeScale) -> UIImage? {
         // 设置缩放比例
         let scale = min(size.width / self.size.width, size.height / self.size.height)
-                
-        let ciImage = self.ciImage != nil ? self.ciImage : CIImage.init(image: self)
+        
+        var ciImage = self.ciImage
+        if ciImage == nil {
+            if self.cgImage != nil {
+                ciImage = CIImage(cgImage: self.cgImage!)
+            } else {
+                return self
+            }
+        }
         let filter = CIFilter.init(name: "CIAffineTransform", parameters: [kCIInputImageKey : ciImage as Any])
         filter?.setDefaults()
         filter?.setValue(CGAffineTransform(scaleX: scale, y: scale), forKey: "inputTransform")
