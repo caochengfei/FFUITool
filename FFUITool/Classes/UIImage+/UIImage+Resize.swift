@@ -66,6 +66,28 @@ extension UIImage {
     }
     
     
+    public func resized(image:UIImage?, scale: CGFloat) throws -> UIImage? {
+        guard let targetCGImage = image?.cgImage else { return nil }
+        let width = Int(CGFloat(targetCGImage.width) * scale)
+        let height = Int(CGFloat(targetCGImage.height) * scale)
+
+        let imageByteSize = width * height * 4
+        let outputBytes = UnsafeMutablePointer<UInt8>.allocate(capacity: Int(imageByteSize))
+        let rawBytes = UnsafeMutableRawPointer(outputBytes)
+        
+        let colorSpace = CGColorSpaceCreateDeviceRGB()
+        let context = CGContext.init(data: rawBytes, width: width, height: height, bitsPerComponent: 8, bytesPerRow: width * 4, space: colorSpace, bitmapInfo: CGBitmapInfo(rawValue: targetCGImage.alphaInfo.rawValue).rawValue, releaseCallback: { releaseInfo, data in
+            releaseInfo?.deallocate()
+        }, releaseInfo: rawBytes)
+        context?.draw(targetCGImage, in: CGRect(x: 0, y: 0 , width: width, height: height))
+
+        if let result = context?.makeImage() {
+            return UIImage(cgImage: result)
+        }
+        return nil
+    }
+    
+    
     /// 使用ImageIO缩放图片 流式读取 不需要解码
     /// - Parameters:
     ///   - url: 文件路径url
