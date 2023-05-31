@@ -83,7 +83,7 @@ open class FFNavigationBar: UIView {
         }
     }
     
-    public var titleView: UIView? {
+    public weak var titleView: UIView? {
         didSet {
             setupUI()
             setupLayout()
@@ -126,6 +126,11 @@ open class FFNavigationBar: UIView {
     
     public required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    deinit {
+        let fileName: String = (#file as NSString).lastPathComponent
+        ffPrint("\(fileName) - deinit")
     }
     
     public func setupUI() {
