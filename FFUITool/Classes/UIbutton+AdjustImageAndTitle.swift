@@ -79,11 +79,12 @@ extension UIButton {
             self.titleEdgeInsets = UIEdgeInsets(top: 0, left: -(imageWidth + space * 0.5), bottom: 0, right: imageWidth + space * 0.5)
             self.imageEdgeInsets = UIEdgeInsets(top: 0, left: titleWidth + space * 0.5, bottom: 0, right: -(titleWidth + space * 0.5))
         case .imageDownTitleUp:
-            self.titleEdgeInsets = UIEdgeInsets(top: (titleHeight + space) * 0.5, left: -imageWidth * 0.5, bottom: -(titleHeight + space) * 0.5, right: imageWidth * 0.5)
-            self.imageEdgeInsets = UIEdgeInsets(top: -(imageHeight + space) * 0.5, left: titleWidth * 0.5, bottom: (imageHeight + space) * 0.5, right: -titleWidth * 0.5)
-        case .imageUpTitleDown:
             self.titleEdgeInsets = UIEdgeInsets(top: -(titleHeight + space) * 0.5, left: -imageWidth * 0.5, bottom: (titleHeight + space) * 0.5, right: imageWidth * 0.5)
             self.imageEdgeInsets = UIEdgeInsets(top: (imageHeight + space) * 0.5, left: titleWidth * 0.5, bottom: -(imageHeight + space) * 0.5, right: -titleWidth * 0.5)
+        case .imageUpTitleDown:
+            self.titleEdgeInsets = UIEdgeInsets(top: (titleHeight + space) * 0.5, left: -imageWidth * 0.5, bottom: -(titleHeight + space) * 0.5, right: imageWidth * 0.5)
+            self.imageEdgeInsets = UIEdgeInsets(top: -(imageHeight + space) * 0.5, left: titleWidth * 0.5, bottom: (imageHeight + space) * 0.5, right: -titleWidth * 0.5)
+           
 
         default:
             self.titleEdgeInsets = UIEdgeInsets(top: 0, left: space * 0.5, bottom: 0, right: -space * 0.5)
