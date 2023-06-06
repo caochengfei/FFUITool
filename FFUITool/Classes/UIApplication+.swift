@@ -160,10 +160,10 @@ extension UIApplication {
 
     @objc public static var AppRoot: UIViewController? {
         set {
-            shared.keyWindow?.rootViewController = newValue
+            shared.windows.first(where: {$0.isKeyWindow})?.rootViewController = newValue
         }
         get {
-            if let root = shared.keyWindow?.rootViewController {
+            if let root = shared.windows.first(where: {$0.isKeyWindow})?.rootViewController {
                 return root
             } else {
                 return nil
@@ -180,7 +180,7 @@ extension UIApplication {
     }
     
     @objc public static var AppWindow: UIWindow? {
-        if let window = shared.keyWindow {
+        if let window = shared.windows.first(where: {$0.isKeyWindow}) {
             return window
         } else {
             return nil
