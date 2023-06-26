@@ -11,7 +11,11 @@ extension UIView {
     
     public var left: CGFloat {
         set {
-            self.frame.origin.x = newValue
+            var value = newValue
+            if value.isNaN {
+                value = 0
+            }
+            self.frame.origin.x = value
         }
         get {
             return self.frame.origin.x
@@ -29,7 +33,11 @@ extension UIView {
     
     public var top: CGFloat {
         set {
-            self.frame.origin.y = newValue
+            var value = newValue
+            if value.isNaN {
+                value = 0
+            }
+            self.frame.origin.y = value
         }
         get {
             return self.frame.origin.y
@@ -65,7 +73,11 @@ extension UIView {
     
     public var width: CGFloat {
         set {
-            self.frame.size = CGSize(width: newValue, height: self.frame.height)
+            var value = newValue
+            if value.isNaN {
+                value = 0
+            }
+            self.frame.size = CGSize(width: value, height: self.frame.height)
         }
         get {
             return self.frame.width
@@ -75,7 +87,11 @@ extension UIView {
     
     public var height: CGFloat {
         set {
-            self.frame.size = CGSize(width: self.frame.width, height: newValue)
+            var value = newValue
+            if value.isNaN {
+                value = 0
+            }
+            self.frame.size = CGSize(width: self.frame.width, height: value)
         }
         get {
             return self.frame.height
