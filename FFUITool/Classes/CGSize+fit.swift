@@ -54,3 +54,15 @@ public extension CGSize {
     }
 }
 
+
+public extension CGFloat {
+    var float: Float {
+        return Float(self)
+    }
+}
+
+public extension Float {
+    var cgFloat: CGFloat {
+        return CGFloat(self)
+    }
+}

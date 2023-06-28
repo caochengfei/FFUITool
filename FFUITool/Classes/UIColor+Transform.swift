@@ -71,7 +71,7 @@ extension UIColor {
         return String(format: "#%02x%02x%02x", Int(rgbComponents.red * 255), Int(rgbComponents.green * 255), Int(rgbComponents.blue * 255))
     }
     
-    public var hexRBGA: String {
+    public var hexRGBA: String {
         return String(format: "#%02x%02x%02x%02x", Int(rgbComponents.red * 255), Int(rgbComponents.green * 255), Int(rgbComponents.blue * 255), Int(rgbComponents.alpha * 255) )
     }
 }
