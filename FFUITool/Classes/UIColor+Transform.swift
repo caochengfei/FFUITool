@@ -150,6 +150,15 @@ extension UIColor {
         }
         return self
     }
+    
+    public var dynamic222222: UIColor {
+        if #available(iOS 13, *) {
+            return UIColor.init { trait in
+                return trait.userInterfaceStyle == .light ? self : "#222222".toRGB
+            }
+        }
+        return self
+    }
 }
 
 extension UIColor {
