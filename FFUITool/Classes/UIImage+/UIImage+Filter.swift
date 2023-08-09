@@ -14,6 +14,7 @@ extension UIImage {
         guard let cgImage = self.cgImage else {
             return nil
         }
+//        let scale = size.width / 30.0
         let scale = 10 * size.width / UIScreen.main.bounds.width
         
         let inputImage = CIImage(cgImage: cgImage)
