@@ -95,6 +95,7 @@ extension UIImage {
     /// - Returns: UIImage
     public static func resized(at url: URL, for size: CGSize) -> UIImage? {
         let options: [CFString : Any] = [
+            kCGImageSourceCreateThumbnailFromImageAlways: true,
             kCGImageSourceCreateThumbnailFromImageIfAbsent: true,
             kCGImageSourceCreateThumbnailWithTransform: true,
             kCGImageSourceShouldCacheImmediately: true,
