@@ -114,7 +114,12 @@ open class FFNavigationBar: UIView {
         super.init(frame: frame)
         self.itemBottomSpacing = itemBottomSpacing
         // 适配下药丸屏幕
-        if UIDevice.deviceName == "iPhone 14 Pro" || UIDevice.deviceName == "iPhone 14 Pro Max", itemBottomSpacing == 12 {
+        if UIDevice.deviceName == "iPhone 14 Pro"
+            || UIDevice.deviceName == "iPhone 15"
+            || UIDevice.deviceName == "iPhone 15 Pro"
+            || UIDevice.deviceName == "iPhone 15 Plus", itemBottomSpacing == 12
+            || UIDevice.deviceName == "iPhone 15 Pro Max", itemBottomSpacing == 12
+            || UIDevice.deviceName == "iPhone 14 Pro Max", itemBottomSpacing == 12 {
             self.itemBottomSpacing = 8
         }
         self.backButtonFont = font
