@@ -109,6 +109,10 @@ open class FFSliderView: UIView {
         }
     }
     
+    public func setValue(value: Float, animated: Bool) {
+        slider.setValue(value, animated: animated)
+    }
+    
     public var showSliderValueView: Bool = false {
         didSet {
             if showSliderValueView {

@@ -121,6 +121,8 @@ open class FloatingView: UIView {
     
     open var pinchScale: CGFloat = 1.0
     
+    open var useTransformZoom: Bool = true
+    
     open var image: UIImage?
     /// 显示内容 uiview/uitextview/uiimageview 等
     open var contentView: UIView? {
@@ -131,13 +133,21 @@ open class FloatingView: UIView {
             contentView?.isUserInteractionEnabled = false
             
             if let contentView = contentView {
-                contentView.size = CGSize(width: contentView.width * pinchScale, height: contentView.height * pinchScale)
-                self.frame = contentView.frame
-                self.center = center
-                contentView.frame = self.bounds
-                contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-                self.insertSubview(contentView, at: 0)
-                self.transform = CGAffineTransform.init(rotationAngle: lastRotation)
+                if useTransformZoom == false {
+                    contentView.size = CGSize(width: contentView.width * pinchScale, height: contentView.height * pinchScale)
+                    self.frame = contentView.frame
+                    self.center = center
+                    contentView.frame = self.bounds
+                    contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+                    self.insertSubview(contentView, at: 0)
+                    self.transform = CGAffineTransform.init(rotationAngle: lastRotation)
+                } else {
+                    self.frame = contentView.frame
+                    self.center = center
+                    contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+                    self.insertSubview(contentView, at: 0)
+                    self.transform = CGAffineTransform(scaleX: pinchScale, y: pinchScale).rotated(by: lastRotation)
+                }
             }
         }
     }
@@ -367,10 +377,14 @@ extension FloatingView: UIGestureRecognizerDelegate {
     }
     
     @objc public func pinchAction(_ pinch: UIPinchGestureRecognizer) {
+        useTransformZoom ? pinchActionWithTransform(pinch) : pinchActionWithBounds(pinch)
+        pinchActionWithTransform(pinch)
+    }
+    
+    private func pinchActionWithBounds(_ pinch: UIPinchGestureRecognizer) {
         let touchCount = pinch.numberOfTouches
-        if touchCount <= 1 {
-            return
-        }
+        if touchCount <= 1 { return }
+        
         let p1 = pinch.location(ofTouch: 0, in: self)
         let p2 = pinch.location(ofTouch: 1, in: self)
         let newPoint = CGPoint(x: (p1.x + p2.x) / 2, y: (p1.y + p2.y) / 2)
@@ -380,7 +394,6 @@ extension FloatingView: UIGestureRecognizerDelegate {
         self.center = oPoint
         
         let scale = pinch.scale
-        
         // bounds target
         self.bounds = CGRect(x: self.bounds.origin.x, y: self.bounds.origin.y, width: self.bounds.size.width * scale, height: self.bounds.size.height * scale)
         self.contentView?.mask?.frame = self.contentView?.bounds ?? .zero
@@ -400,6 +413,85 @@ extension FloatingView: UIGestureRecognizerDelegate {
         
         pinch.scale = 1
         pinchScale = (contentView?.width ?? 1) / (image?.size.width ?? 1)
+    }
+    
+    private func pinchActionWithTransform(_ pinch: UIPinchGestureRecognizer) {
+        switch pinch.state {
+        case .began:
+            pinch.scale = self.pinchScale
+        case .changed:
+            let touchCount = pinch.numberOfTouches
+            if touchCount <= 1 { return }
+
+            let p1 = pinch.location(ofTouch: 0, in: self)
+            let p2 = pinch.location(ofTouch: 1, in: self)
+            let newPoint = CGPoint(x: (p1.x + p2.x) / 2, y: (p1.y + p2.y) / 2)
+            self.originalPoint = CGPoint(x: newPoint.x / self.bounds.size.width, y: newPoint.y / self.bounds.size.height)
+            
+            var oPoint = self.convert(self.realOriginalPoint, to: self.superview)
+            self.center = oPoint
+            
+            let scale = pinch.scale
+            // bounds target
+            self.transform = CGAffineTransform(scaleX: scale, y: scale)
+    //        self.bounds = CGRect(x: self.bounds.origin.x, y: self.bounds.origin.y, width: self.bounds.size.width * scale, height: self.bounds.size.height * scale)
+    //        self.contentView?.mask?.frame = self.contentView?.bounds ?? .zero
+            
+    //        NSLog(@"count:%lu",(unsigned long)self.contentView.subviews.count);
+    //        if let view = self.contentView?.subviews.first {
+    //            let center = view.center
+    //            view.bounds = CGRect(x: view.bounds.origin.x, y: view.bounds.origin.y, width: view.bounds.size.width * scale, height: view.bounds.size.height * scale)
+    //            view.center = CGPoint(x: center.x * scale, y: center.y * scale)
+    //        }
+            
+            //TODO: transform target
+            
+            // change center
+            oPoint = self.convert(self.realOriginalPoint, to: self.superview)
+            self.center = CGPoint(x: self.center.x + (self.center.x - oPoint.x), y: self.center.y + (self.center.y - oPoint.y))
+        case .ended, .cancelled:
+            pinchScale = pinch.scale
+
+        default:
+            break
+        }
+//        if pinch.state == .began {
+//            pinch.scale = self.pinchScale
+//        }
+//        
+//        let touchCount = pinch.numberOfTouches
+//        if touchCount <= 1 { return }
+//
+//        let p1 = pinch.location(ofTouch: 0, in: self)
+//        let p2 = pinch.location(ofTouch: 1, in: self)
+//        let newPoint = CGPoint(x: (p1.x + p2.x) / 2, y: (p1.y + p2.y) / 2)
+//        self.originalPoint = CGPoint(x: newPoint.x / self.bounds.size.width, y: newPoint.y / self.bounds.size.height)
+//        
+//        var oPoint = self.convert(self.realOriginalPoint, to: self.superview)
+//        self.center = oPoint
+//        
+//        let scale = pinch.scale
+//        // bounds target
+//        self.transform = CGAffineTransform(scaleX: scale, y: scale)
+////        self.bounds = CGRect(x: self.bounds.origin.x, y: self.bounds.origin.y, width: self.bounds.size.width * scale, height: self.bounds.size.height * scale)
+////        self.contentView?.mask?.frame = self.contentView?.bounds ?? .zero
+//        
+////        NSLog(@"count:%lu",(unsigned long)self.contentView.subviews.count);
+////        if let view = self.contentView?.subviews.first {
+////            let center = view.center
+////            view.bounds = CGRect(x: view.bounds.origin.x, y: view.bounds.origin.y, width: view.bounds.size.width * scale, height: view.bounds.size.height * scale)
+////            view.center = CGPoint(x: center.x * scale, y: center.y * scale)
+////        }
+//        
+//        //TODO: transform target
+//        
+//        // change center
+//        oPoint = self.convert(self.realOriginalPoint, to: self.superview)
+//        self.center = CGPoint(x: self.center.x + (self.center.x - oPoint.x), y: self.center.y + (self.center.y - oPoint.y))
+//        
+////        pinch.scale = 1
+//        pinchScale = pinch.scale
+////        pinchScale = (contentView?.width ?? 1) / (image?.size.width ?? 1)
     }
     
     @objc open func panAction(_ pan: UIPanGestureRecognizer) {

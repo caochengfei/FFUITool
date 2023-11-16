@@ -10,12 +10,11 @@ import Foundation
 extension UIImage {
     
     /// 马赛克图片
-    public func processMosaicImage() -> UIImage? {
+    public func processMosaicImage(radius: CGFloat = 10.0) -> UIImage? {
         guard let cgImage = self.cgImage else {
             return nil
         }
-//        let scale = size.width / 30.0
-        let scale = 10 * size.width / UIScreen.main.bounds.width
+        let scale = radius * size.width / UIScreen.main.bounds.width
         
         let inputImage = CIImage(cgImage: cgImage)
         let filter = CIFilter(name: "CIPixellate")

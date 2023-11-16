@@ -93,9 +93,9 @@ extension UIImage {
     ///   - url: 文件路径url
     ///   - size: 目标大小
     /// - Returns: UIImage
-    public static func resized(at url: URL, for size: CGSize) -> UIImage? {
+    public static func resized(at url: URL, for size: CGSize, alwaysThumb: Bool = true) -> UIImage? {
         let options: [CFString : Any] = [
-            kCGImageSourceCreateThumbnailFromImageAlways: true,
+            kCGImageSourceCreateThumbnailFromImageAlways: alwaysThumb,
             kCGImageSourceCreateThumbnailFromImageIfAbsent: true,
             kCGImageSourceCreateThumbnailWithTransform: true,
             kCGImageSourceShouldCacheImmediately: true,
