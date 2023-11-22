@@ -71,6 +71,8 @@ open class LoadingView: UIView {
         }
     }
     
+    public var progress: CGFloat = 0.1
+    
     public override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = UIColor.clear
@@ -147,7 +149,7 @@ open class LoadingView: UIView {
     public class func show(with view: UIView? = nil, safeTouch: UIEdgeInsets = .zero, canceled: (()->())? = nil) {
         LoadingView.hide(with: view)
         DispatchQueue.main.async {
-            guard let view = view ?? UIApplication.shared.keyWindow else {
+            guard let view = view ?? UIApplication.shared.windows.first else {
                 return
             }
             let loadingView = LoadingView(frame: CGRect(origin: .zero, size: CGSize(width: view.width, height: view.height)))
@@ -164,7 +166,7 @@ open class LoadingView: UIView {
     public class func show(with view: UIView? = nil, title: String?, titleFont: UIFont?, canceled: (()->())? = nil) {
         LoadingView.hide(with: view)
         DispatchQueue.main.async {
-            guard let view = view ?? UIApplication.shared.keyWindow else {
+            guard let view = view ?? UIApplication.shared.windows.first else {
                 return
             }
             let loadingView = LoadingView(frame: CGRect(origin: .zero, size: CGSize(width: view.width, height: view.height)), title: title, titleFont: titleFont)
@@ -180,9 +182,9 @@ open class LoadingView: UIView {
     
     public class func hide(with view: UIView? = nil) {
         DispatchQueue.main.async {
-            let view = view ?? UIApplication.shared.keyWindow
+            let view = view ?? UIApplication.shared.windows.first
             let loadingView = view?.viewWithTag(233333) as? LoadingView
-            loadingView?.loadingLayer.strokeEnd = 1.0
+            setProgress(with: view, progress: 1.0)
             DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.22) {
                 loadingView?.endAnimate()
                 loadingView?.removeFromSuperview()
@@ -193,27 +195,32 @@ open class LoadingView: UIView {
     
     public class func setProgress(with view: UIView? = nil, progress: CGFloat) {
         if Thread.isMainThread {
-            let view = view ?? UIApplication.shared.keyWindow
-            let loadingView = view?.viewWithTag(233333) as? LoadingView
-            if let loadingView = loadingView {
-                CATransaction.begin()
-                CATransaction.setAnimationDuration(0.2)
-                loadingView.loadingLayer.strokeEnd = max(min(max(0.1, progress), 1), loadingView.loadingLayer.strokeEnd)
-                CATransaction.commit()
-            }
+            setProgress(with: view, progress: progress)
         } else {
             DispatchQueue.main.async {
-                let view = view ?? UIApplication.shared.keyWindow
-                let loadingView = view?.viewWithTag(233333) as? LoadingView
-                if let loadingView = loadingView {
-                    CATransaction.begin()
-                    CATransaction.setAnimationDuration(0.2)
-                    loadingView.loadingLayer.strokeEnd = max(min(max(0.1, progress), 1), loadingView.loadingLayer.strokeEnd)
-                    CATransaction.commit()
-                }
+                setProgress(with: view, progress: progress)
             }
         }
-     
+        
+        func setProgress(with view: UIView? = nil, progress: CGFloat) {
+            let view = view ?? UIApplication.shared.windows.first
+            let loadingView = view?.viewWithTag(233333) as? LoadingView
+            guard let loadingView = loadingView else {
+                return
+            }
+            let progress = min(max(0.1, progress), 1)
+            if progress > loadingView.progress {
+                ffPrint("render progress - \(progress)")
+                let animate = CABasicAnimation(keyPath: "strokeEnd")
+                animate.duration = 0.2
+                animate.fromValue = loadingView.progress
+                animate.toValue = progress
+                animate.isRemovedOnCompletion = false
+                animate.fillMode = CAMediaTimingFillMode.forwards
+                loadingView.loadingLayer.add(animate, forKey: "progress")
+                loadingView.progress = progress
+            }
+        }
     }
     
     open override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
