@@ -90,6 +90,14 @@ public class FFDiskTool : NSObject {
         }
     }
     
+    public static func saveFile(data: Data?, url: URL) async throws {
+        do {
+            try data?.write(to: url)
+        } catch  {
+            throw error
+        }
+    }
+    
     public static func copyItem(fromPath: String, toPath: String) {
         let fromUrl = URL(fileURLWithPath: fromPath)
         let toUrl = URL(fileURLWithPath: toPath)

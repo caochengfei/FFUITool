@@ -33,3 +33,29 @@ extension UIImage {
     }
 }
 
+extension UIImage {
+    
+    public enum DataType: String {
+        case png = "public.png"
+        case heic = "public.heic"
+        case jpeg = "public.jpeg"
+        
+        var cfString: CFString {
+            return self.rawValue as CFString
+        }
+    }
+    
+    public func writeTo(fileUrl:URL, compressionQuality: CGFloat = 1, fileType:DataType = DataType.jpeg) throws {
+        let url = fileUrl as CFURL
+        let destination = CGImageDestinationCreateWithURL(url, fileType.cfString, 1, nil);
+        if nil == destination {
+            throw NSError(domain: "destination == nil", code: -1)
+        }
+        
+        if nil == self.cgImage {
+            throw NSError(domain: "image.cgImage = nil", code: -1)
+        }
+        CGImageDestinationAddImage(destination!, self.cgImage!, [kCGImageDestinationLossyCompressionQuality: compressionQuality] as CFDictionary)
+        CGImageDestinationFinalize(destination!)
+    }
+}

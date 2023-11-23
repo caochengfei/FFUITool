@@ -134,8 +134,8 @@ open class FFNavigationBar: UIView {
     }
     
     deinit {
-        let fileName: String = (#file as NSString).lastPathComponent
-        ffPrint("\(fileName) - deinit")
+        
+        deinitPrint()
     }
     
     public func setupUI() {

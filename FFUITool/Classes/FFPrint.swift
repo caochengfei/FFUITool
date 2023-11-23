@@ -23,3 +23,25 @@ public func ffAssert(_ condition: Bool, _ message: String? = nil) {
     }
     #endif
 }
+
+public protocol DebugPrintProtocol: AnyObject {
+    func deinitPrint()
+}
+
+extension DebugPrintProtocol {
+    public func deinitPrint()   {
+        #if DEBUG
+        print("Deinit 🐱 ->>【\(type(of: self))】")
+        #endif
+    }
+}
+
+
+extension NSObject: DebugPrintProtocol{
+    public func deinitPrint()   {
+        #if DEBUG
+        print("Deinit 🐱 ->>【\(type(of: self))】")
+        #endif
+    }
+}
+
