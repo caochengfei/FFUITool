@@ -189,5 +189,16 @@ public func showToast(msg: String?, withCenter: Bool = false) {
                font: UIFont.systemFont(ofSize: 15))
 }
 
+public func showDebugToast(msg: String?, withCenter: Bool = false) {
+    #if DEBUG
+    guard let msg = msg else {return}
+    let centerY = withCenter ? UIScreen.main.bounds.height / 2 :  UIScreen.main.bounds.height - kBottomSafeHeight - 40.rem
+    Toast.show(with: msg,
+               positionCenterY: centerY,
+               font: UIFont.systemFont(ofSize: 15))
+    #endif
+}
+
+
 
 
