@@ -10,6 +10,30 @@ import WebKit
 
 extension WKWebView {
     
+    public func ff_takeSnapshotImage(webView: WKWebView) async throws -> UIImage {
+        try await withUnsafeThrowingContinuation { (ct:UnsafeContinuation<UIImage, Error>) in
+            ff_takeSnapshotImage(webView: webView) { image in
+                if let image = image {
+                    ct.resume(returning: image)
+                } else {
+                    ct.resume(throwing: NSError(domain: "takeSnapshotImage error webview: \(webView.self)", code: 0))
+                }
+            }
+        }
+    }
+    
+    public func ff_takeSnapshotWebViewScroll(webView: WKWebView, progressHandle: ((_ progress: CGFloat)->())? = nil) async throws -> UIImage {
+        try await withUnsafeThrowingContinuation { (ct:UnsafeContinuation<UIImage, Error>) in
+            ff_takeSnapshotWebViewScroll(webView: webView, progressHandle: progressHandle) { image in
+                if let image = image {
+                    ct.resume(returning: image)
+                } else {
+                    ct.resume(throwing: NSError(domain: "takeSnapshotImage error webview: \(webView.self)", code: 0))
+                }
+            }
+        }
+    }
+    
     /// WKWebView 长截图,对于高度有限制,高度太高会导致内存占用过多 webview进程被杀死
     /// - Parameters:
     ///   - webView: webView
@@ -73,7 +97,6 @@ extension WKWebView {
            }
         }
     }
-    
     
     
     /// WKWebView 长截图,采用滚动offSet的形式, 单张图片拼接,解决了position:flexd重叠问题
