@@ -164,11 +164,11 @@ open class LoadingView: UIView {
     }
     
     public class func show(with view: UIView? = nil, title: String?, titleFont: UIFont?, canceled: (()->())? = nil) {
-        LoadingView.hide(with: view)
         DispatchQueue.main.async {
             guard let view = view ?? UIApplication.shared.windows.first else {
                 return
             }
+            view.viewWithTag(233333)?.removeFromSuperview()
             let loadingView = LoadingView(frame: CGRect(origin: .zero, size: CGSize(width: view.width, height: view.height)), title: title, titleFont: titleFont)
             loadingView.canceldCallback = canceled
             loadingView.tag = 233333
