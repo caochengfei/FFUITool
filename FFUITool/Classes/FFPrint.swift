@@ -12,6 +12,7 @@ public func ffPrint<T>(_ message: T, file: String = #file, funcName: String = #f
         let fileName: String = (file as NSString).lastPathComponent
         print("***********Log************\n🐱【\(fileName)：\(lineNum)】->>   \(message)")
     #endif
+    
 }
 
 public func ffAssert(_ condition: Bool, _ message: String? = nil) {
