@@ -18,59 +18,59 @@ private let shouldLog: Bool = false
 #endif
 
 /// log等级划分最高级,会阻断运行 ❌
-@inlinable public func PLogFatalError(_ message: @autoclosure () -> String,
-                       file: StaticString = #file,
-                       function: StaticString = #function,
+@inlinable public func PLogFatalError<T>(_ message: T,
+                       file: String = #file,
+                       function: String = #function,
                        line: UInt = #line) {
-    PLog.log(message(), type: .fatalError, file: file, function: function, line: line)
+    PLog.log(message, type: .fatalError, file: file, function: function, line: line)
 }
  
 /// log等级划分最高级 ❌
-@inlinable public func PLogError(_ message: @autoclosure () -> String,
-                       file: StaticString = #file,
-                       function: StaticString = #function,
+@inlinable public func PLogError<T>(_ message: T,
+                       file: String = #file,
+                       function: String = #function,
                        line: UInt = #line) {
-    PLog.log(message(), type: .error, file: file, function: function, line: line)
+    PLog.log(message, type: .error, file: file, function: function, line: line)
 }
 
 /// log等级划分警告级 ⚠️
-@inlinable public func PLogWarn(_ message: @autoclosure () -> String,
-                      file: StaticString = #file,
-                      function: StaticString = #function,
+@inlinable public func PLogWarn<T>(_ message: T,
+                      file: String = #file,
+                      function: String = #function,
                       line: UInt = #line) {
-    PLog.log(message(), type: .warn, file: file, function: function, line: line)
+    PLog.log(message, type: .warn, file: file, function: function, line: line)
 }
 
 /// log等级划分信息级 🔔
-@inlinable public func PLogInfo(_ message: @autoclosure () -> String,
-                      file: StaticString = #file,
-                      function: StaticString = #function,
+@inlinable public func PLogInfo<T>(_ message: T,
+                      file: String = #file,
+                      function: String = #function,
                       line: UInt = #line) {
-    PLog.log(message(), type: .info, file: file, function: function, line: line)
+    PLog.log(message, type: .info, file: file, function: function, line: line)
 }
 
 /// 专门打印网络日志，可以单独关闭 🌐
-@inlinable public func PLogNet(_ message: @autoclosure () -> String,
-                      file: StaticString = #file,
-                      function: StaticString = #function,
+@inlinable public func PLogNet<T>(_ message: T,
+                      file: String = #file,
+                      function: String = #function,
                       line: UInt = #line) {
-    PLog.log(message(), type: .net, file: file, function: function, line: line)
+    PLog.log(message, type: .net, file: file, function: function, line: line)
 }
 
 /// log等级划分开发级 ✅
-@inlinable public func PLogDebug(_ message: @autoclosure () -> String,
-                       file: StaticString = #file,
-                       function: StaticString = #function,
+@inlinable public func PLogDebug<T>(_ message: T,
+                       file: String = #file,
+                       function: String = #function,
                        line: UInt = #line) {
-    PLog.log(message(), type: .debug, file: file, function: function, line: line)
+    PLog.log(message, type: .debug, file: file, function: function, line: line)
 }
  
 /// log等级划分最低级 ⚪ 可忽略
-@inlinable public func PLogVerbose(_ message: @autoclosure () -> String,
-                         file: StaticString = #file,
-                         function: StaticString = #function,
+@inlinable public func PLogv<T>(_ message: T,
+                         file: String = #file,
+                         function: String = #function,
                          line: UInt = #line) {
-    PLog.log(message(), type: .verbose, file: file, function: function, line: line)
+    PLog.log(message, type: .verbose, file: file, function: function, line: line)
 }
 
 /// log等级
@@ -135,49 +135,49 @@ public class PLog {
     }
     
     /// log等级划分最低级 ⚪ 可忽略
-    public static func verbose(_ message: String,
-                             file: StaticString = #file,
-                             function: StaticString = #function,
+    public static func verbose<T>(_ message: T,
+                             file: String = #file,
+                             function: String = #function,
                              line: UInt = #line) {
         log(message, type: .verbose, file: file, function: function, line: line)
     }
     
     /// log等级划分开发级 ✅
-    public static func debug(_ message: String,
-                             file: StaticString = #file,
-                             function: StaticString = #function,
+    public static func debug<T>(_ message: T,
+                             file: String = #file,
+                             function: String = #function,
                              line: UInt = #line) {
         log(message, type: .debug, file: file, function: function, line: line)
     }
     
     /// 专门打印网络日志，可以单独关闭 🌐
-    public static func net(_ message: String,
-                             file: StaticString = #file,
-                             function: StaticString = #function,
+    public static func net<T>(_ message: T,
+                             file: String = #file,
+                             function: String = #function,
                              line: UInt = #line) {
         log(message, type: .net, file: file, function: function, line: line)
     }
     
     /// log等级划分信息级 🔔
-    public static func info(_ message: String,
-                             file: StaticString = #file,
-                             function: StaticString = #function,
+    public static func info<T>(_ message: T,
+                             file: String = #file,
+                             function: String = #function,
                              line: UInt = #line) {
         log(message, type: .info, file: file, function: function, line: line)
     }
     
     /// log等级划分警告级 ⚠️
-    public static func warn(_ message: String,
-                             file: StaticString = #file,
-                             function: StaticString = #function,
+    public static func warn<T>(_ message: T,
+                             file: String = #file,
+                             function: String = #function,
                              line: UInt = #line) {
         log(message, type: .warn, file: file, function: function, line: line)
     }
     
     /// log等级划分最高级 ❌
-    public static func error(_ message: String,
-                             file: StaticString = #file,
-                             function: StaticString = #function,
+    public static func error<T>(_ message: T,
+                             file: String = #file,
+                             function: String = #function,
                              line: UInt = #line) {
         log(message, type: .error, file: file, function: function, line: line)
     }
@@ -190,10 +190,10 @@ public class PLog {
     ///   - file: 所在文件
     ///   - function: 所在方法
     ///   - line: 所在行
-    public static func log(_ message: @autoclosure () -> String,
+    public static func log<T>(_ message: T,
                            type: LogDegree,
-                           file: StaticString,
-                           function: StaticString,
+                           file: String,
+                           function: String,
                            line: UInt) {
         
         if type.rawValue < defaultLogDegree.rawValue{ return }
@@ -201,7 +201,7 @@ public class PLog {
         if type == .net, !showNetLog{ return }
         
         let fileName = String(describing: file).lastPathComponent
-        let formattedMsg = String(format: "所在类:%@ ｜ 方法名:%@ ｜ 所在行:%d \n %@ ", fileName, String(describing: function), line, message())
+        let formattedMsg = String(format: "所在类:%@ ｜ 方法名:%@ ｜ 所在行:%d \n ", fileName.lastPathComponent, String(describing: function), line) + "\(message)"
         PLogFormatter.log(message: formattedMsg, type: type, addFileLog : addFileLog)
     }
     
@@ -227,13 +227,14 @@ class PLogFormatter {
         case .net:
             logLevelStr = "🌐 Network 🌐"
         case .debug:
-            logLevelStr = "✅ Debug ✅"
+            logLevelStr = "🐶 Debug 🐶"
         case .verbose:
-            logLevelStr = "⚪ Verbose ⚪"
+            logLevelStr = "🐱 Verbose 🐱"
         }
         
         let dateStr = dateFormatter.string(from: Date())
-        let finalMessage = String(format: "\n%@ | %@ \n %@", logLevelStr, dateStr, logMessage)
+        let finalMessage = String(format: "\n%@ | %@ \n", logLevelStr, dateStr) + "\(logMessage)"
+        
         let msg = finalMessage.replaceUnicode
         
         //将内容同步写到文件中去（Caches文件夹下）

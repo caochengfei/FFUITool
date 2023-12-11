@@ -210,7 +210,6 @@ open class LoadingView: UIView {
             }
             let progress = min(max(0.1, progress), 1)
             if progress > loadingView.progress {
-                ffPrint("render progress - \(progress)")
                 let animate = CABasicAnimation(keyPath: "strokeEnd")
                 animate.duration = 0.2
                 animate.fromValue = loadingView.progress

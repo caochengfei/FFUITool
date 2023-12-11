@@ -7,12 +7,10 @@
 
 import Foundation
 
-public func ffPrint<T>(_ message: T, file: String = #file, funcName: String = #function, lineNum: Int = #line) {
+public func ffPrint<T>(_ message: T, file: String = #file, funcName: String = #function, lineNum: UInt = #line) {
     #if DEBUG
-        let fileName: String = (file as NSString).lastPathComponent
-        print("***********Log************\n🐱【\(fileName)：\(lineNum)】->>   \(message)")
+    PLogv(message, file: file, function: funcName, line: lineNum)
     #endif
-    
 }
 
 public func ffAssert(_ condition: Bool, _ message: String? = nil) {
