@@ -74,8 +74,10 @@ open class FFSliderValueView: UIView {
 
 open class FFSlider: UISlider {
     public var thumbRect: CGRect = .zero
+    public var trackRect: CGRect = .zero
     
     public override func thumbRect(forBounds bounds: CGRect, trackRect rect: CGRect, value: Float) -> CGRect {
+        self.trackRect = rect
         self.thumbRect = super.thumbRect(forBounds: bounds, trackRect: rect, value: value)
         return self.thumbRect
     }
@@ -84,10 +86,12 @@ open class FFSlider: UISlider {
 open class FFSliderView: UIView {
     public var sliderDidChange: SliderValueChange?
     public var sliderDidEnded: SliderValueChangeEnded?
+    // 用来显示 slider 左边的 icon
     public var leftImageView: UIImageView!
+    // 用来显示 slider 右边的 icon
     public var rightImageView: UIImageView!
     public var slider: FFSlider!
-
+    
     public var maxValue: Float = 100 {
         didSet {
             slider.maximumValue = maxValue
@@ -161,6 +165,7 @@ open class FFSliderView: UIView {
         slider.minimumValue = minValue
         slider.maximumValue = maxValue
         slider.value = value
+        slider.maximumTrackTintColor = "#E6E6E6".toRGB
         slider.minimumTrackTintColor = "#19B2FF".toRGB
         slider.addTarget(self, action: #selector(sliderValueChange(_ :)), for: .valueChanged)
         slider.addTarget(self, action: #selector(sliderValueChangeEnded(_ :)), for: .touchUpInside)
@@ -253,5 +258,81 @@ private class SliderThumbView: UIView {
             return image
         }
         
+    }
+}
+
+
+
+/// 分段的 sliderview
+open class FFSegmentSliderView: FFSliderView {
+    public var enableTapticEngine: Bool = true
+    
+    public private(set) var segmentPointViews: [UIView]?
+    
+    public var segmentations:[Float] = [Float]() {
+        didSet {
+            configSegmentPointView()
+        }
+    }
+    
+    public override init(frame: CGRect) {
+        super.init(frame: frame)
+    }
+    
+    public convenience init(frame: CGRect,segmentations: [Float], enableTapticEngine: Bool = true) {
+        self.init(frame: frame)
+        self.segmentations = segmentations
+        self.enableTapticEngine = enableTapticEngine
+        configSegmentPointView()
+    }
+    
+    private func configSegmentPointView() {
+        segmentPointViews = [UIView]()
+        for _ in segmentations {
+            let circleView = UIView()
+            circleView.size = CGSize(width: 8, height: 8)
+            circleView.layer.cornerRadius = 4
+            circleView.backgroundColor = "#E6E6E6".toRGB
+            slider.insertSubview(circleView, at: 0)
+            segmentPointViews?.append(circleView)
+        }
+    }
+    
+    open override func layoutSubviews() {
+        super.layoutSubviews()
+        guard let segmentPointViews = self.segmentPointViews else { return }
+        let count = min(segmentPointViews.count, segmentations.count)
+        for i in 0..<count {
+            let value = segmentations[i]
+            let view = segmentPointViews[i]
+            view.centerX = CGFloat(value / (self.maxValue - self.minValue)) * slider.trackRect.width + slider.trackRect.minX
+            view.centerY = slider.height / 2
+
+        }
+    }
+    
+    required public init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    var tapticValue: Float = -1
+    
+    override func sliderValueChange(_ slider: FFSlider) {
+        super.sliderValueChange(slider)
+        
+        for value in segmentations {
+            if slider.value == value || ceil(slider.value) == value || floor(slider.value) == value {
+                if enableTapticEngine, tapticValue != value {
+                    TapticEngine.mediumBoom()
+                    tapticValue = value
+                }
+                slider.value = value
+                break
+            } else {
+                if abs(tapticValue - slider.value) > 3 {
+                    tapticValue = -1
+                }
+            }
+        }
     }
 }
