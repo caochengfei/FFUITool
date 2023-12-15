@@ -211,7 +211,6 @@ open class FFSliderView: UIView {
         sliderDidChange?(slider.value,slider.minimumValue,slider.maximumValue)
         sliderValueView?.isHidden = false
         sliderValueView?.value = CGFloat(slider.value)
-        ffPrint(slider.thumbRect)
         sliderValueView?.snp.remakeConstraints({ make in
             make.centerX.equalTo(slider.thumbRect.midX + 8 + leftImageView.right)
             make.bottom.equalTo(slider.snp.top).offset(-3)
