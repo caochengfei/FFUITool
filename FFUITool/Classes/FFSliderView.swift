@@ -321,7 +321,7 @@ open class FFSegmentSliderView: FFSliderView {
         super.sliderValueChange(slider)
         
         for value in segmentations {
-            if slider.value == value || ceil(slider.value) == value || floor(slider.value) == value {
+            if slider.value.rounded() == value {
                 if enableTapticEngine, tapticValue != value {
                     TapticEngine.mediumBoom()
                     tapticValue = value
@@ -329,7 +329,7 @@ open class FFSegmentSliderView: FFSliderView {
                 slider.value = value
                 break
             } else {
-                if abs(tapticValue - slider.value) > 3 {
+                if abs(tapticValue - slider.value) > 2 {
                     tapticValue = -1
                 }
             }
