@@ -19,7 +19,7 @@ extension UIImage {
                 self.draw(in: CGRect(origin: .zero, size: size))
             }
         } else {
-            UIGraphicsBeginImageContextWithOptions(size, false, UIScreen.main.scale)
+            UIGraphicsBeginImageContextWithOptions(size, false, UIDevice.deviceScale)
             self.draw(in: CGRect(origin: .zero, size: size))
             let image = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()

@@ -25,8 +25,8 @@ extension UIScrollView {
         let maxIndex = floor(scrollView.contentSize.height / scrollView.bounds.height)
                 
         var scale: CGFloat = 1.0
-        let contentMemorySize = scrollView.contentSize.width * scrollView.contentSize.height * CGFloat(UIScreen.main.scale) * 4
-        let maxMemorySize: CGFloat = 80 * 1024 * 1024 / UIScreen.main.scale
+        let contentMemorySize = scrollView.contentSize.width * scrollView.contentSize.height * CGFloat(UIDevice.deviceScale) * 4
+        let maxMemorySize: CGFloat = 80 * 1024 * 1024 / UIDevice.deviceScale
         if contentMemorySize > maxMemorySize {
             scale = maxMemorySize / contentMemorySize
         }
@@ -49,7 +49,7 @@ extension UIScrollView {
         let splitRect = CGRect(origin: CGPoint(x: 0, y: CGFloat(pageDrawIndex) * scrollView.frame.size.height), size: pageSize)
         var resultImage = resultImage
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.2) {
-            UIGraphicsBeginImageContextWithOptions(pageSize, true, UIScreen.main.scale)
+            UIGraphicsBeginImageContextWithOptions(pageSize, true, UIDevice.deviceScale)
             scrollView.drawHierarchy(in: CGRect(origin: .zero, size: pageSize), afterScreenUpdates: false)
             let image = UIGraphicsGetImageFromCurrentImageContext()?.resized(with: pageSize.width * scale)
             UIGraphicsEndImageContext()

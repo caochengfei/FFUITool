@@ -144,11 +144,10 @@ extension UIDevice {
     }
     
     public static var deviceScale: CGFloat {
-        if physicalMemory <= 2000 {
-            return UIScreen.main.nativeScale / 3.0 * 2
+        if #available(iOS 17.0, *) {
+            return UIScreen.main.nativeScale
+        } else {
+            return UIScreen.main.scale
         }
-        return UIScreen.main.nativeScale
-        
-//        return UIScreen.main.scale
     }
 }

@@ -22,7 +22,7 @@ open class FFScreenFit {
     //MARK: public
     public var screenWidth = UIScreen.main.bounds.width
     public var screenHeight = UIScreen.main.bounds.height
-    public let scale = UIScreen.main.scale
+    public let scale = UIDevice.deviceScale
     public var defaultSize: CGFloat = 375
     
     public static func instance() -> FFScreenFit{

@@ -53,7 +53,7 @@ extension WKWebView {
 
         let newSize = webView.scrollView.contentSize
 
-        var scale = UIScreen.main.scale
+        var scale = UIDevice.deviceScale
         if newSize.height / webView.bounds.size.height > 10 {
             scale = webView.bounds.size.height * 10 / newSize.height * scale
         }
@@ -116,8 +116,8 @@ extension WKWebView {
         let maxIndex = floor(webView.scrollView.contentSize.height / webView.bounds.height)
                 
         var scale: CGFloat = 1.0
-        let contentMemorySize = webView.scrollView.contentSize.width * webView.scrollView.contentSize.height * CGFloat(UIScreen.main.scale) * 4
-        let maxMemorySize: CGFloat = 80 * 1024 * 1024 / UIScreen.main.scale
+        let contentMemorySize = webView.scrollView.contentSize.width * webView.scrollView.contentSize.height * CGFloat(UIDevice.deviceScale) * 4
+        let maxMemorySize: CGFloat = 80 * 1024 * 1024 / UIDevice.deviceScale
         if contentMemorySize > maxMemorySize {
             scale = maxMemorySize / contentMemorySize
         }
@@ -140,7 +140,7 @@ extension WKWebView {
         let splitRect = CGRect(origin: CGPoint(x: 0, y: CGFloat(pageDrawIndex) * webView.frame.size.height), size: pageSize)
         var resultImage = resultImage
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.3) {
-            UIGraphicsBeginImageContextWithOptions(pageSize, true, UIScreen.main.scale)
+            UIGraphicsBeginImageContextWithOptions(pageSize, true, UIDevice.deviceScale)
             webView.scrollView.drawHierarchy(in: CGRect(origin: .zero, size: pageSize), afterScreenUpdates: false)
             let image = UIGraphicsGetImageFromCurrentImageContext()?.resized(with: pageSize.width * scale)
             UIGraphicsEndImageContext()
