@@ -12,9 +12,13 @@ public typealias SliderValueChange = (_ value: Float, _ minValue: Float, _ maxVa
 public typealias SliderValueChangeEnded = (_ value: Float)->()
 
 open class FFSliderValueView: UIView {
+    public var numberOfDecimalPoints: Int = 0
+    
+    public var showDenom: CGFloat = 0
+    
     public var value: CGFloat = 0 {
         didSet {
-            label.text = String(format: "%.0f", value)
+            label.text = String(format: "%.\(numberOfDecimalPoints)f", value / showDenom)
         }
     }
     
@@ -150,6 +154,10 @@ open class FFSliderView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
+    deinit {
+        deinitPrint()
+    }
+    
     public func setupUI() {
         leftImageView = UIImageView()
         leftImageView.tintColor = UIColor.black.dynamicWhite
@@ -213,13 +221,13 @@ open class FFSliderView: UIView {
     }
     
     @objc func sliderValueChange(_ slider: FFSlider) {
-        sliderDidChange?(slider.value,slider.minimumValue,slider.maximumValue)
         sliderValueView?.isHidden = false
         sliderValueView?.value = CGFloat(slider.value)
         sliderValueView?.snp.remakeConstraints({ make in
             make.centerX.equalTo(slider.thumbRect.midX + 8 + leftImageView.right)
             make.bottom.equalTo(slider.snp.top).offset(-3)
         })
+        sliderDidChange?(slider.value,slider.minimumValue,slider.maximumValue)
     }
     
     @objc func sliderValueChangeEnded(_ slider: UISlider) {
