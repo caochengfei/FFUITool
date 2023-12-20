@@ -14,7 +14,7 @@ public typealias SliderValueChangeEnded = (_ value: Float)->()
 open class FFSliderValueView: UIView {
     public var numberOfDecimalPoints: Int = 0
     
-    public var showDenom: CGFloat = 0
+    public var showDenom: CGFloat = 1
     
     public var value: CGFloat = 0 {
         didSet {
