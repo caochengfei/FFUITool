@@ -8,6 +8,20 @@
 import Foundation
 
 extension UIScrollView {
+    
+    
+    public func ff_takeSnapshotWebViewScroll(scrollView: UIScrollView, progressHandle: ((_ progress: CGFloat)->())? = nil) async throws -> UIImage {
+        try await withUnsafeThrowingContinuation { (ct:UnsafeContinuation<UIImage, Error>) in
+            ff_takeSnapshotWebViewScroll(scrollView: scrollView, progressHandle: progressHandle) { image in
+                if let image = image {
+                    ct.resume(returning: image)
+                } else {
+                    ct.resume(throwing: NSError(domain: "takeSnapshotImage error webview: \(scrollView.self)", code: 0))
+                }
+            }
+        }
+    }
+    
     /// WKWebView 长截图,采用滚动offSet的形式, 单张图片拼接,解决了position:flexd重叠问题
     /// - Parameters:
     ///   - webView: WKWebView
