@@ -58,9 +58,10 @@ extension UIScrollView {
     }
     
     private func contentScroll(scrollView: UIScrollView, pageDrawIndex: Int, maxIndex: Int, scale: CGFloat, resultImage: inout UIImage?,progressHandle: ((_ progress: CGFloat)->())? = nil, drawCallback: @escaping (UIImage?)->()) {
-        scrollView.setContentOffset(CGPoint(x: 0, y: pageDrawIndex * Int(scrollView.frame.size.height)), animated: false)
-        let pageSize = CGSize(width: scrollView.frame.width, height: scrollView.frame.height)
-        let splitRect = CGRect(origin: CGPoint(x: 0, y: CGFloat(pageDrawIndex) * scrollView.frame.size.height), size: pageSize)
+        let viewHeight: CGFloat = floor(scrollView.frame.size.height)
+        scrollView.setContentOffset(CGPoint(x: 0, y: pageDrawIndex * Int(viewHeight)), animated: false)
+        let pageSize = CGSize(width: scrollView.frame.width, height: viewHeight)
+        let splitRect = CGRect(origin: CGPoint(x: 0, y: CGFloat(pageDrawIndex) * viewHeight), size: pageSize)
         var resultImage = resultImage
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 0.2) {
             UIGraphicsBeginImageContextWithOptions(pageSize, true, UIDevice.deviceScale)
