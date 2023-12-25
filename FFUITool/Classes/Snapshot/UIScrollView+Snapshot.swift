@@ -31,6 +31,10 @@ extension UIScrollView {
             captureComplated(nil)
             return
         }
+        if scrollView.bounds.height == 0 {
+            return
+        }
+        
         snapShotView.frame = CGRect(x: scrollView.frame.origin.x, y: scrollView.frame.origin.y, width: snapShotView.frame.size.width, height: snapShotView.frame.size.height)
         scrollView.superview?.addSubview(snapShotView)
         
