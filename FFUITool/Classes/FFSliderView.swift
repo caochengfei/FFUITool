@@ -16,9 +16,15 @@ open class FFSliderValueView: UIView {
     
     public var showDenom: CGFloat = 1
     
+    public var showPercentStyle: Bool = false
+    
     public var value: CGFloat = 0 {
         didSet {
-            label.text = String(format: "%.\(numberOfDecimalPoints)f", value / showDenom)
+            if showPercentStyle == false {
+                label.text = String(format: "%.\(numberOfDecimalPoints)f", value / showDenom)
+            } else {
+                label.text = String(format: "%.0f", value / showDenom) + "%"
+            }
         }
     }
     
