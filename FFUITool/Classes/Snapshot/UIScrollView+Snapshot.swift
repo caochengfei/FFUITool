@@ -9,7 +9,7 @@ import Foundation
 
 extension UIScrollView {
     
-    
+    @available(iOS 13.0, *)
     public func ff_takeSnapshotWebViewScroll(scrollView: UIScrollView, progressHandle: ((_ progress: CGFloat)->())? = nil) async throws -> UIImage {
         try await withUnsafeThrowingContinuation { (ct:UnsafeContinuation<UIImage, Error>) in
             ff_takeSnapshotWebViewScroll(scrollView: scrollView, progressHandle: progressHandle) { image in

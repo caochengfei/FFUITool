@@ -10,6 +10,7 @@ import WebKit
 
 extension WKWebView {
     
+    @available(iOS 13.0, *)
     public func ff_takeSnapshotImage(webView: WKWebView) async throws -> UIImage {
         try await withUnsafeThrowingContinuation { (ct:UnsafeContinuation<UIImage, Error>) in
             ff_takeSnapshotImage(webView: webView) { image in
@@ -22,6 +23,7 @@ extension WKWebView {
         }
     }
     
+    @available(iOS 13.0, *)
     public func ff_takeSnapshotWebViewScroll(webView: WKWebView, progressHandle: ((_ progress: CGFloat)->())? = nil) async throws -> UIImage {
         try await withUnsafeThrowingContinuation { (ct:UnsafeContinuation<UIImage, Error>) in
             ff_takeSnapshotWebViewScroll(webView: webView, progressHandle: progressHandle) { image in

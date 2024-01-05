@@ -90,6 +90,7 @@ public class FFDiskTool : NSObject {
         }
     }
     
+    @available(iOS 13.0, *)
     public static func saveFile(data: Data?, url: URL) async throws {
         do {
             try data?.write(to: url)

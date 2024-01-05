@@ -45,6 +45,7 @@ extension UIImage {
         }
     }
     
+    @available(iOS 13.0, *)
     public func writeTo(fileUrl:URL, compressionQuality: CGFloat = 1, fileType:DataType = DataType.jpeg) async throws -> Bool{
         return try await Task<Bool, Error> {
             let url = fileUrl as CFURL
