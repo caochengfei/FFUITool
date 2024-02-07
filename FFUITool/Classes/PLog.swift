@@ -287,17 +287,7 @@ private extension String {
         let tempStr1 = self.replacingOccurrences(of: "\\u", with: "\\U")
         let tempStr2 = tempStr1.replacingOccurrences(of: "\"", with: "\\\"")
         let tempStr3 = "\"".appending(tempStr2).appending("\"")
-        guard let tempData = tempStr3.data(using: String.Encoding.utf8) else {
-            return "unicode转码失败"
-        }
-        var returnStr:String = ""
-        do {
-            returnStr = try PropertyListSerialization.propertyList(from: tempData, options: [.mutableContainers], format: nil) as! String
-        } catch {
-            returnStr = tempStr3
-            print(error)
-        }
-        return returnStr.replacingOccurrences(of: "\\r\\n", with: "\n")
+        return tempStr3.replacingOccurrences(of: "\\r\\n", with: "\n")
     }
 }
 
