@@ -105,11 +105,19 @@ extension Double {
     public var rem: Double {
         return FFScreenFit.instance().getPx(size: CGFloat(self))
     }
+    
+    public var px: Double {
+        return self.rem
+    }
 }
 
 extension Float {
     public var rem: Float {
         return Float(FFScreenFit.instance().getPx(size: CGFloat(self)))
+    }
+    
+    public var px: Float {
+        return self.rem
     }
 }
 
@@ -117,11 +125,19 @@ extension CGFloat {
     public var rem: CGFloat {
         return CGFloat(FFScreenFit.instance().getPx(size: CGFloat(self)))
     }
+    
+    public var px: CGFloat {
+        return self.rem
+    }
 }
 
 extension Int {
     public var rem: Int {
         return Int(FFScreenFit.instance().getPx(size: CGFloat(self)))
+    }
+    
+    public var px: Int {
+        return self.rem
     }
 }
 

@@ -1,5 +1,5 @@
 PODS:
-  - FFUITool (0.1.1):
+  - FFUITool (0.1.2):
     - SnapKit
   - SnapKit (5.6.0)
 
@@ -15,9 +15,9 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  FFUITool: f36a703d6f9545fca846c0ebb1cc52e99bbc6b4d
+  FFUITool: c5d4e7bfdee7bce05c814dd114f3c2fe9491439e
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
 
 PODFILE CHECKSUM: 011f4f06c7e0129ca95e8026bc25a76ac7f277bd
 
-COCOAPODS: 1.12.0
+COCOAPODS: 1.15.2
