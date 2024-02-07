@@ -294,6 +294,7 @@ private extension String {
         do {
             returnStr = try PropertyListSerialization.propertyList(from: tempData, options: [.mutableContainers], format: nil) as! String
         } catch {
+            returnStr = tempStr3
             print(error)
         }
         return returnStr.replacingOccurrences(of: "\\r\\n", with: "\n")
