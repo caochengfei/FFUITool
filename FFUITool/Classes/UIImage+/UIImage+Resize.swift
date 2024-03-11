@@ -124,6 +124,21 @@ extension UIImage {
         }
         return UIImage(cgImage: image)
     }
+    
+    public static func decoderImage(at data: Data) -> UIImage? {
+        let options: [CFString : Any] = [
+            kCGImageSourceCreateThumbnailFromImageIfAbsent: true,
+            kCGImageSourceCreateThumbnailWithTransform: true,
+            kCGImageSourceShouldCacheImmediately: true,
+        ]
+        
+        
+        guard let imageSource = CGImageSourceCreateWithData(data as CFData, nil),
+              let image = CGImageSourceCreateImageAtIndex(imageSource, 0, options as CFDictionary) else {
+            return nil
+        }
+        return UIImage(cgImage: image)
+    }
 
     
     public func cropImage(boxRect: CGRect, scale: CGFloat = 1) -> UIImage? {

@@ -23,25 +23,19 @@ open class FFScreenFit {
     public var screenWidth = UIScreen.main.bounds.width
     public var screenHeight = UIScreen.main.bounds.height
     public let scale = UIDevice.deviceScale
-    public var iPhoneSize: CGFloat = 375
-    public var iPadSize: CGFloat = kScreenWidth
-    public var iPadMaxSize: CGFloat = kScreenWidth
+    public var designSize: CGFloat = 375
     
     public static func instance() -> FFScreenFit{
         return _instace;
     }
     
-    public func config(iPhoneSize: CGFloat = 375, iPadSize: CGFloat = 375, iPadMaxSize: CGFloat = kScreenWidth) {
-        self.iPhoneSize = iPhoneSize
-        self.iPadSize = iPadSize
-        self.iPadMaxSize = iPadMaxSize
+    public func config(designSize: CGFloat = 375, screenWidth: CGFloat = UIScreen.main.bounds.width) {
+        self.designSize = designSize
+        self.screenWidth = screenWidth
     }
     
     public func getPx(size: CGFloat) -> CGFloat {
-        if UIDevice.current.userInterfaceIdiom == .pad {
-            return iPadMaxSize / iPadSize * size
-        }
-        return screenWidth / iPhoneSize * size
+        return screenWidth / designSize * size
     }
 }
 
