@@ -23,20 +23,26 @@ open class FFScreenFit {
     public var screenWidth = UIScreen.main.bounds.width
     public var screenHeight = UIScreen.main.bounds.height
     public let scale = UIDevice.deviceScale
-    public var defaultSize: CGFloat = 375
+    public var iPhoneSize: CGFloat = 375
+    public var iPadSize: CGFloat = kScreenWidth
+    public var iPadMaxSize: CGFloat = kScreenWidth
     
     public static func instance() -> FFScreenFit{
         return _instace;
     }
     
-    public func config(defaultSize: CGFloat = 375) {
-        self.defaultSize = defaultSize;
+    public func config(iPhoneSize: CGFloat = 375, iPadSize: CGFloat = 375, iPadMaxSize: CGFloat = kScreenWidth) {
+        self.iPhoneSize = iPhoneSize
+        self.iPadSize = iPadSize
+        self.iPadMaxSize = iPadMaxSize
     }
     
     public func getPx(size: CGFloat) -> CGFloat {
-        return screenWidth / defaultSize * size;
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            return iPadMaxSize / iPadSize * size
+        }
+        return screenWidth / iPhoneSize * size
     }
-
 }
 
 //MARK: - 刘海屏判断
