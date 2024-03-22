@@ -150,9 +150,9 @@ open class Toast: UIView {
             bottom = positionBottom
         } else {
             if position == .bottom {
-                bottom = kScreeHeight - 20.rem
+                bottom = kScreenHeight - 20.rem
             } else {
-                centerY = kScreeHeight / 2
+                centerY = kScreenHeight / 2
             }
         }
         Toast.sharedLabel.center = CGPoint(x: self.width * 0.5, y: self.height * 0.5)

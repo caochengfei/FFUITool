@@ -11,7 +11,7 @@ public var kScreenWidth: CGFloat {
     return FFScreenFit.instance().screenWidth
 }
 
-public var kScreeHeight: CGFloat {
+public var kScreenHeight: CGFloat {
     return FFScreenFit.instance().screenHeight
 }
 

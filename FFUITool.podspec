@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'FFUITool'
-  s.version          = '0.1.6'
+  s.version          = '0.1.7'
   s.summary          = 'A short description of FFUITool.'
 
 # This description is used to generate tags and improve search results.
