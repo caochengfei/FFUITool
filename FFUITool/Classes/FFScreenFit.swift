@@ -7,12 +7,19 @@
 
 import UIKit
 
-public let kScreenWidth = FFScreenFit.instance().screenWidth
-public let kScreenHeight = FFScreenFit.instance().screenHeight
+public var kScreenWidth: CGFloat {
+    return FFScreenFit.instance().screenWidth
+}
+
+public var kScreeHeight: CGFloat {
+    return FFScreenFit.instance().screenHeight
+}
+
 public var kIsFullScreen = FFScreenFit.instance().isFullScreen
 public let kNavigationBarHeight = FFScreenFit.instance().navigationBarHeight
 public let kBottomSafeHeight = FFScreenFit.instance().bottomSafeHeight
 public let kTopSafeHeight = FFScreenFit.instance().topSafeHeight
+
 
 open class FFScreenFit {
     //MARK: private

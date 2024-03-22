@@ -9,7 +9,7 @@ import Foundation
 
 private let kCacheFileName = "PLog.txt"
 
-private let logFileURL = FFDiskTool.cacheUrl.appendingPathComponent(kCacheFileName)
+private let logFileURL = FileManager.cacheUrl.appendingPathComponent(kCacheFileName)
 
 #if DEBUG
 private let shouldLog: Bool = true

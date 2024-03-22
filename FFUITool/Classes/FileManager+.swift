@@ -7,50 +7,48 @@
 
 import Foundation
 
-public enum FFIOToolDirectory: String {
+public enum FileManagerDirectory: String {
     case document
     case library
     case caches
     case tmp
 }
 
-public class FFDiskTool : NSObject {
-    
-    public static var documentPath: String {
+public extension FileManager {
+    static var documentPath: String {
         return documentUrl.path
     }
     
-    public static var documentUrl: URL {
+    static var documentUrl: URL {
         let documentUrl = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
         return documentUrl
     }
     
-    public static var LibraryPath: String {
+    static var LibraryPath: String {
         return libraryUrl.path
     }
     
-    public static var libraryUrl: URL {
+    static var libraryUrl: URL {
         let libraryUrl = FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).first!
         return libraryUrl
     }
     
-    public static var cacheUrl: URL {
+    static var cacheUrl: URL {
         let cacheUrl = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
         return cacheUrl
     }
     
-    public static var cachePath: String {
+    static var cachePath: String {
         return cacheUrl.path
     }
     
-    public static var tmpUrl: URL {
+    static var tmpUrl: URL {
         return URL(fileURLWithPath: NSTemporaryDirectory())
     }
     
-    public static var tmpPath: String {
+    static var tmpPath: String {
         return NSTemporaryDirectory()
     }
-
     
     /// 创建文件夹
     /// - Parameters:
@@ -58,7 +56,7 @@ public class FFDiskTool : NSObject {
     ///   - mainDirectory: 主目录
     ///   - skipBackup: 是否阻止icloud备份
     /// - Returns: 完整路径URL
-    public static func createDirectory(directoryName: String, mainDirectory: URL? = nil, skipBackup: Bool = true) -> URL {
+    static func createDirectory(directoryName: String, mainDirectory: URL? = nil, skipBackup: Bool = true) -> URL {
         var url: URL! = mainDirectory == nil ? cacheUrl.appendingPathComponent(directoryName) : mainDirectory?.appendingPathComponent(directoryName)
         
         var isDirectory = ObjCBool.init(false)
@@ -75,7 +73,7 @@ public class FFDiskTool : NSObject {
     }
     
     @discardableResult
-    public static func saveFile(data: Data?, url: URL) -> Bool {
+    static func saveFile(data: Data?, url: URL) -> Bool {
         guard let data = data  else {
             return false
         }
@@ -91,7 +89,7 @@ public class FFDiskTool : NSObject {
     }
     
     @available(iOS 13.0, *)
-    public static func saveFile(data: Data?, url: URL) async throws {
+    static func saveFile(data: Data?, url: URL) async throws {
         do {
             try data?.write(to: url)
         } catch  {
@@ -99,13 +97,13 @@ public class FFDiskTool : NSObject {
         }
     }
     
-    public static func copyItem(fromPath: String, toPath: String) {
+    static func copyItem(fromPath: String, toPath: String) {
         let fromUrl = URL(fileURLWithPath: fromPath)
         let toUrl = URL(fileURLWithPath: toPath)
-        FFDiskTool.copyItem(fromUrl: fromUrl, toUrl: toUrl)
+        FileManager.copyItem(fromUrl: fromUrl, toUrl: toUrl)
     }
     
-    public static func copyItem(fromUrl: URL, toUrl: URL) {
+    static func copyItem(fromUrl: URL, toUrl: URL) {
         do {
             try FileManager.default.copyItem(at: fromUrl, to: toUrl)
         } catch {
@@ -115,7 +113,7 @@ public class FFDiskTool : NSObject {
     
     /// 清空文件夹下的所有文件
     /// - Parameter url: 文件夹路径
-    public static func clearDirectory(url: URL) {
+    static func clearDirectory(url: URL) {
         guard let files = FileManager.default.subpaths(atPath: url.path) else {return}
         for file in files {
             try? FileManager.default.removeItem(atPath: url.path + "/\(file)")
@@ -124,13 +122,13 @@ public class FFDiskTool : NSObject {
     
     /// 删除文件或者文件夹
     /// - Parameter url: 文件/文件夹URL
-    public static func removeFile(url: URL) {
+    static func removeFile(url: URL) {
         try? FileManager.default.removeItem(at: url)
     }
     
-    /// 设置排序icloud云端备份的文件夹
+    /// 设置排除icloud云端备份的文件夹
     /// - Parameter url: 文件夹路径
-    public static func addSkipBackupAttributeToItemAtUrl(url: inout URL) {
+    static func addSkipBackupAttributeToItemAtUrl(url: inout URL) {
         do {
             var resourceValues = URLResourceValues()
             resourceValues.isExcludedFromBackup = true
@@ -139,4 +137,5 @@ public class FFDiskTool : NSObject {
             ffPrint(error)
         }
     }
+    
 }

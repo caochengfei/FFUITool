@@ -150,9 +150,9 @@ open class Toast: UIView {
             bottom = positionBottom
         } else {
             if position == .bottom {
-                bottom = kScreenHeight - 20.rem
+                bottom = kScreeHeight - 20.rem
             } else {
-                centerY = kScreenHeight / 2
+                centerY = kScreeHeight / 2
             }
         }
         Toast.sharedLabel.center = CGPoint(x: self.width * 0.5, y: self.height * 0.5)
@@ -183,19 +183,18 @@ open class Toast: UIView {
 
 public func showToast(msg: String?, withCenter: Bool = false) {
     guard let msg = msg else {return}
-    let centerY = withCenter ? UIScreen.main.bounds.height / 2 :  UIScreen.main.bounds.height - kBottomSafeHeight - 40.rem
-    Toast.show(with: msg,
-               positionCenterY: centerY,
-               font: UIFont.systemFont(ofSize: 15))
+    DispatchQueue.main.async {
+        let centerY = withCenter ? UIScreen.main.bounds.height / 2 :  UIScreen.main.bounds.height - kBottomSafeHeight - 40.rem
+        Toast.show(with: msg,
+                   positionCenterY: centerY,
+                   font: UIFont.systemFont(ofSize: 15))
+    }
 }
 
 public func showDebugToast(msg: String?, withCenter: Bool = false) {
     #if DEBUG
     guard let msg = msg else {return}
-    let centerY = withCenter ? UIScreen.main.bounds.height / 2 :  UIScreen.main.bounds.height - kBottomSafeHeight - 40.rem
-    Toast.show(with: msg,
-               positionCenterY: centerY,
-               font: UIFont.systemFont(ofSize: 15))
+    showToast(msg: msg)
     #endif
 }
 

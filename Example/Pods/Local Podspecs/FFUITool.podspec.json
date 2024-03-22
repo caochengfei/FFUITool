@@ -1,6 +1,6 @@
 {
   "name": "FFUITool",
-  "version": "0.1.2",
+  "version": "0.1.5",
   "summary": "A short description of FFUITool.",
   "description": "TODO: Add long description of the pod here.",
   "homepage": "https://github.com/caochengfei/FFUITool",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/caochengfei/FFUITool.git",
-    "tag": "0.1.2"
+    "tag": "0.1.5"
   },
   "swift_versions": "5.0",
   "platforms": {
