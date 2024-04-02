@@ -7,8 +7,8 @@
 
 import Foundation
 
-extension UIDevice {
-    public static var deviceName: String {
+public extension UIDevice {
+    @objc static var deviceName: String {
         var systemInfo = utsname()
         uname(&systemInfo)
         let matchMirror = Mirror(reflecting: systemInfo.machine)
