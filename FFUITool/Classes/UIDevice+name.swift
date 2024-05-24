@@ -106,7 +106,11 @@ public extension UIDevice {
         case "iPad8,11","iPad8,12" : return "iPad Pro 4 (12.9-inch)"
         case "iPad13,4","iPad13,5","iPad13,6","iPad13,7" : return "iPad Pro 4 (11-inch)"
         case "iPad13,8","iPad13,9","iPad13,10","iPad13,11" : return "iPad Pro 5 (12.9-inch)"
-
+        case "iPad14,3", "iPad14,4": return "iPad Pro 11-inch 4th gen"
+        case "iPad14,5", "iPad14,6": return "iPad Pro 12.9-inch 6th gen"
+        case "iPad14,8", "iPad14,9": return "iPad Air 6th Gen"
+        case "iPad16,3-A", "iPad16,3-B", "iPad16,4-A", "iPad16,4-B": return "iPad Pro 11 inch 5th Gen"
+        case "iPad16,5-A", "iPad16,5-B", "iPad16,6-A", "iPad16,6-B": return "iPad Pro 12.9 inch 7th Gen"
 
         // AppleTV
         case "AppleTV1,1": return "Apple TV 1"
