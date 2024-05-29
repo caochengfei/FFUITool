@@ -87,20 +87,20 @@ extension UIApplication {
         return base
     }
     
-//    public class func topNavi(_ base: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
-//        if let nav = base as? UINavigationController {
-//            return nav
-//        }
-//        if let tab = base as? UITabBarController {
-//            if let selected = tab.selectedViewController {
-//                return topViewController(selected)
-//            }
-//        }
-//        if let presented = base?.presentedViewController {
-//            return topViewController(presented)
-//        }
-//        return base
-//    }
+    public class func topNavi(_ base: UIViewController? = UIApplication.AppRoot) -> UIViewController? {
+        if let nav = base as? UINavigationController {
+            return nav
+        }
+        if let tab = base as? UITabBarController {
+            if let selected = tab.selectedViewController {
+                return topViewController(selected)
+            }
+        }
+        if let presented = base?.presentedViewController {
+            return topViewController(presented)
+        }
+        return base
+    }
     
     public class func openApplicationInSetting() {
         if let url = URL(string: UIApplication.openSettingsURLString), shared.canOpenURL(url) {
@@ -181,6 +181,14 @@ extension UIApplication {
     
     @objc public static var AppWindow: UIWindow? {
         if let window = shared.windows.first(where: {$0.isKeyWindow}) {
+            return window
+        } else {
+            return nil
+        }
+    }
+    
+    @objc public static var firstWindow: UIWindow? {
+        if let window = shared.windows.first {
             return window
         } else {
             return nil
