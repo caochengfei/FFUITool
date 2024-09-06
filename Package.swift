@@ -22,7 +22,7 @@ let package = Package(
                 dependencies: [
                     .product(name: "SnapKit", package: "SnapKit")
                 ],
-                path: "FFUITool/Classes"
+                path: "Sources"
 //                resources: [
 //                    .process("FFUITool/Classes")
 //                ]

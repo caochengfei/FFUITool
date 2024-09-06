@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'FFUITool'
-  s.version          = '0.2.0'
+  s.version          = '0.2.2'
   s.summary          = 'A short description of FFUITool.'
 
 # This description is used to generate tags and improve search results.
@@ -31,7 +31,7 @@ TODO: Add long description of the pod here.
   s.swift_version = '5.0'
   s.ios.deployment_target = '12.0'
 
-  s.source_files = 'FFUITool/Classes/**/*'
+  s.source_files = 'Sources/FFUITool/Classes/**/*'
   
   # s.resource_bundles = {
   #   'FFUITool' => ['FFUITool/Assets/*.png']
