@@ -1,6 +1,6 @@
 {
   "name": "FFUITool",
-  "version": "0.1.5",
+  "version": "0.2.4",
   "summary": "A short description of FFUITool.",
   "description": "TODO: Add long description of the pod here.",
   "homepage": "https://github.com/caochengfei/FFUITool",
@@ -13,13 +13,13 @@
   },
   "source": {
     "git": "https://github.com/caochengfei/FFUITool.git",
-    "tag": "0.1.5"
+    "tag": "0.2.4"
   },
   "swift_versions": "5.0",
   "platforms": {
-    "ios": "10.0"
+    "ios": "12.0"
   },
-  "source_files": "FFUITool/Classes/**/*",
+  "source_files": "Sources/FFUITool/Classes/**/*",
   "dependencies": {
     "SnapKit": [
 
