@@ -116,8 +116,8 @@ public extension UIDevice {
         case "iPad14,8", "iPad14,9": return "iPad Air 6th Gen"
         case "iPad16,3-A", "iPad16,3-B", "iPad16,4-A", "iPad16,4-B": return "iPad Pro 11 inch 5th Gen"
         case "iPad16,5-A", "iPad16,5-B", "iPad16,6-A", "iPad16,6-B": return "iPad Pro 12.9 inch 7th Gen"
-        case "iPad16,1" : return "iPad mini (6th generation) WI-FI"
-        case "iPad16,2": return "iPad mini (6th generation) Cellular"
+        case "iPad16,1" : return "iPad mini 7 WI-FI"
+        case "iPad16,2": return "iPad mini 7 Cellular"
 
         // AppleTV
         case "AppleTV1,1": return "Apple TV 1"
