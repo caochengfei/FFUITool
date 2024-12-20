@@ -21,27 +21,29 @@ public let kBottomSafeHeight = FFScreenFit.instance().bottomSafeHeight
 public let kTopSafeHeight = FFScreenFit.instance().topSafeHeight
 
 
-open class FFScreenFit {
+open class FFScreenFit: NSObject {
     //MARK: private
-    private static let _instace = FFScreenFit();
-    private init(){};
+    private static let _instace = FFScreenFit()
+    public override init() {
+        super.init()
+    }
     
     //MARK: public
-    public var screenWidth = UIScreen.main.bounds.width
-    public var screenHeight = UIScreen.main.bounds.height
-    public let scale = UIDevice.deviceScale
-    public var designSize: CGFloat = 375
+    @objc public var screenWidth = UIScreen.main.bounds.width
+    @objc public var screenHeight = UIScreen.main.bounds.height
+    @objc public let scale = UIDevice.deviceScale
+    @objc public var designSize: CGFloat = 375
     
-    public static func instance() -> FFScreenFit{
+    @objc public static func instance() -> FFScreenFit{
         return _instace;
     }
     
-    public func config(designSize: CGFloat = 375, screenWidth: CGFloat = UIScreen.main.bounds.width) {
+    @objc public func config(designSize: CGFloat = 375, screenWidth: CGFloat = UIScreen.main.bounds.width) {
         self.designSize = designSize
         self.screenWidth = screenWidth
     }
     
-    public func getPx(size: CGFloat) -> CGFloat {
+    @objc public func getPx(size: CGFloat) -> CGFloat {
         return screenWidth / designSize * size
     }
 }
@@ -49,25 +51,25 @@ open class FFScreenFit {
 //MARK: - 刘海屏判断
 extension FFScreenFit {
     
-    public var navigationBarHeight: CGFloat {
+    @objc public var navigationBarHeight: CGFloat {
         return isFullScreen ? 88 : 64
     }
     
-    public var bottomSafeHeight: CGFloat {
+    @objc public var bottomSafeHeight: CGFloat {
         if let bottom = UIApplication.AppWindow?.safeAreaInsets.bottom {
             return bottom
         }
         return isFullScreen ? 34 : 0
     }
     
-    public var topSafeHeight: CGFloat {
+    @objc public var topSafeHeight: CGFloat {
         if let top = UIApplication.AppWindow?.safeAreaInsets.top {
             return top
         }
         return isFullScreen ? 48 : 20
     }
     
-    public var isFullScreen: Bool {
+    @objc public var isFullScreen: Bool {
         /**
          竖屏
          UIEdgeInsets(top: 44.0, left: 0.0, bottom: 34.0, right: 0.0)

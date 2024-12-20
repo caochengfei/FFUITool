@@ -103,7 +103,7 @@ extension UIApplication {
         return base
     }
     
-    public class func openApplicationInSetting() {
+    @objc public class func openApplicationInSetting() {
         if let url = URL(string: UIApplication.openSettingsURLString), shared.canOpenURL(url) {
             if #available(iOS 10.0, *) {
                 shared.open(url, options: [:], completionHandler: { (bool) in })
@@ -115,11 +115,11 @@ extension UIApplication {
         }
     }
     
-    public class func hideStatusBar(with animation: UIStatusBarAnimation = .fade) {
+    @objc public class func hideStatusBar(with animation: UIStatusBarAnimation = .fade) {
         UIApplication.shared.setStatusBarHidden(true, with: animation)
     }
     
-    public class func showStatusBar(with animation: UIStatusBarAnimation = .fade) {
+    @objc public class func showStatusBar(with animation: UIStatusBarAnimation = .fade) {
         UIApplication.shared.setStatusBarHidden(false, with: animation)
     }
     
