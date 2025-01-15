@@ -17,10 +17,15 @@ extension String {
     public var toP3: UIColor {
         return uicolor(alpha: 1.0, p3: true)
     }
+    
+    public func toUIColor(alpha: CGFloat = 1.0, isDisplayP3: Bool = false) -> UIColor {
+        return uicolor(alpha: alpha, p3: isDisplayP3)
+    }
+    
     /// 十六进制颜色转换为UIColor
     /// - Parameter alpha: 透明度
     /// - Returns: UIColor
-    public func uicolor(alpha: CGFloat? = 1.0, p3: Bool = true) -> UIColor {
+    public func uicolor(alpha: CGFloat? = 1.0, p3: Bool = false) -> UIColor {
         var red: UInt64 = 0, green: UInt64 = 0, blue: UInt64 = 0, _alpha: UInt64 = 0
         var hex = self
         // 去掉前缀
@@ -50,7 +55,11 @@ extension String {
         }
         return UIColor(red: CGFloat(red) / 255.0, green: CGFloat(green) / 255.0, blue: CGFloat(blue) / 255.0, alpha: alpha ?? 1.0)
     }
-    
+}
+
+// SwiftUI Color
+@available(iOS 13.0, *)
+extension String {
     @available(iOS 13.0, *)
     public var toColor: Color {
         return Color(self.toRGB)
@@ -59,6 +68,11 @@ extension String {
     @available(iOS 13.0, *)
     public var toP3Color: Color {
         return Color(self.toRGB)
+    }
+    
+    @available(iOS 13.0, *)
+    public func toColor(alpha: CGFloat = 1.0, isDisplayP3: Bool = false) -> Color {
+        return Color(self.toUIColor(alpha: alpha, isDisplayP3: isDisplayP3))
     }
     
     @available(iOS 13.0, *)

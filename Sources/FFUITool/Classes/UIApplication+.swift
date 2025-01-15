@@ -68,7 +68,7 @@ extension UIApplication {
     }
 
     /// EZSE: Get the top most view controller from the base view controller; default param is UIWindow's rootViewController
-    @objc public class func topViewController(_ base: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
+    @objc public class func topViewController(_ base: UIViewController? = AppWindow?.rootViewController) -> UIViewController? {
         if let nav = base as? UINavigationController {
             return topViewController(nav.visibleViewController)
         }
@@ -104,15 +104,8 @@ extension UIApplication {
     }
     
     @objc public class func openApplicationInSetting() {
-        if let url = URL(string: UIApplication.openSettingsURLString), shared.canOpenURL(url) {
-            if #available(iOS 10.0, *) {
-                shared.open(url, options: [:], completionHandler: { (bool) in })
-            } else {
-                // Fallback on earlier versions
-            }
-        } else {
-
-        }
+        guard let url = URL(string: UIApplication.openSettingsURLString), shared.canOpenURL(url) else { return }
+        shared.open(url, options: [:], completionHandler: { (bool) in })
     }
     
     @objc public class func hideStatusBar(with animation: UIStatusBarAnimation = .fade) {
@@ -161,23 +154,16 @@ extension UIApplication {
 
     @objc public static var AppRoot: UIViewController? {
         set {
-            shared.windows.first(where: {$0.isKeyWindow})?.rootViewController = newValue
+            AppWindow?.rootViewController = newValue
+            AppWindow?.makeKeyAndVisible()
         }
         get {
-            if let root = shared.windows.first(where: {$0.isKeyWindow})?.rootViewController {
-                return root
-            } else {
-                return nil
-            }
+            return AppWindow?.rootViewController
         }
     }
     
     @objc public static var AppTop: UIViewController? {
-        if let top = topViewController() {
-            return top
-        } else {
-            return nil
-        }
+        return topViewController(AppWindow?.rootViewController)
     }
     
     @objc public static var AppWindow: UIWindow? {
@@ -186,11 +172,7 @@ extension UIApplication {
             return shared.connectedScenes.compactMap({$0 as? UIWindowScene}).compactMap({$0.keyWindow}).first
         } else {
             // Fallback on earlier versions
-        }
-        if let window = shared.windows.first(where: {$0.isKeyWindow}) {
-            return window
-        } else {
-            return nil
+            return shared.windows.first(where: {$0.isKeyWindow})
         }
     }
     
