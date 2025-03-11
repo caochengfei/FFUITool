@@ -165,7 +165,7 @@ extension UIApplication {
     @objc public static var AppTop: UIViewController? {
         return topViewController(AppWindow?.rootViewController)
     }
-    
+
     @objc public static var AppWindow: UIWindow? {
         
         if #available(iOS 15.0, *) {
@@ -179,7 +179,20 @@ extension UIApplication {
                 .first(where: {$0.windowLevel == .normal})
         }
     }
-    
+
+    @objc public static var keyWindow: UIWindow? {
+
+        if #available(iOS 15.0, *) {
+            return shared.connectedScenes.compactMap({$0 as? UIWindowScene})
+                .compactMap({$0.keyWindow})
+                .first
+        } else {
+            // Fallback on earlier versions
+            return shared.windows
+                .first(where: {$0.isKeyWindow})
+        }
+    }
+
     @objc public static var firstWindow: UIWindow? {
         if let window = shared.windows.first {
             return window
