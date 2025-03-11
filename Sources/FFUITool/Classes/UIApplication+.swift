@@ -169,10 +169,14 @@ extension UIApplication {
     @objc public static var AppWindow: UIWindow? {
         
         if #available(iOS 15.0, *) {
-            return shared.connectedScenes.compactMap({$0 as? UIWindowScene}).compactMap({$0.keyWindow}).first
+            return shared.connectedScenes.compactMap({$0 as? UIWindowScene})
+                .compactMap({$0.keyWindow})
+                .filter({$0.windowLevel == .normal})
+                .first
         } else {
             // Fallback on earlier versions
-            return shared.windows.first(where: {$0.isKeyWindow})
+            return shared.windows
+                .first(where: {$0.isKeyWindow && $0.windowLevel == .normal})
         }
     }
     
