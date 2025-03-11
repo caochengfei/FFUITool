@@ -99,7 +99,7 @@ extension FFScreenFit {
             }
         }
         
-        if let window = UIApplication.shared.keyWindow {
+        if let window = UIApplication.keyWindow {
             if #available(iOS 11.0, *) {
                 if window.safeAreaInsets.bottom > 0 {
                     return true
