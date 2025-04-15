@@ -200,4 +200,28 @@ extension UIApplication {
             return nil
         }
     }
+
+    @objc public var isPortrait: Bool {
+        if #available(iOS 13.0, *) {
+            guard let windowScene = connectedScenes.first(where: {$0 is UIWindowScene}) as? UIWindowScene else {
+                return statusBarOrientation.isPortrait
+            }
+            return windowScene.interfaceOrientation.isPortrait
+        } else {
+            // Fallback on earlier versions
+            return statusBarOrientation.isPortrait
+        }
+    }
+
+    @objc public var isLandscape: Bool {
+        if #available(iOS 13.0, *) {
+            guard let windowScene = connectedScenes.first(where: {$0 is UIWindowScene}) as? UIWindowScene else {
+                return statusBarOrientation.isLandscape
+            }
+            return windowScene.interfaceOrientation.isLandscape
+        } else {
+            // Fallback on earlier versions
+            return statusBarOrientation.isLandscape
+        }
+    }
 }
