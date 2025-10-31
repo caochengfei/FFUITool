@@ -62,12 +62,20 @@ extension FFScreenFit {
         return isFullScreen ? 34 : 0
     }
     
-    @objc public var topSafeHeight: CGFloat {
+    public var topSafeHeight: CGFloat {
+#if os(iOS) || os(tvOS)
+        if let top = UIApplication.AppWindow?.safeAreaInsets.top, top > 0 {
+            return top
+        }
+        return isFullScreen ? 48 : 20
+#else
         if let top = UIApplication.AppWindow?.safeAreaInsets.top {
             return top
         }
         return isFullScreen ? 48 : 20
+#endif
     }
+
     
     @objc public var isFullScreen: Bool {
         /**
