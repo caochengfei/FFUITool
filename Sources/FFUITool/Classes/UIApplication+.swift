@@ -183,9 +183,7 @@ extension UIApplication {
     @objc public static var keyWindow: UIWindow? {
 
         if #available(iOS 15.0, *) {
-            return shared.connectedScenes.compactMap({$0 as? UIWindowScene})
-                .compactMap({$0.keyWindow})
-                .first
+            return shared.currentWindowScene?.keyWindow
         } else {
             // Fallback on earlier versions
             return shared.windows
@@ -194,17 +192,13 @@ extension UIApplication {
     }
 
     @objc public static var firstWindow: UIWindow? {
-        if let window = shared.windows.first {
-            return window
-        } else {
-            return nil
-        }
+        return shared.currentWindowScene?.windows.first
     }
 
     @objc public var isPortrait: Bool {
         if #available(iOS 13.0, *) {
-            guard let windowScene = connectedScenes.first(where: {$0 is UIWindowScene}) as? UIWindowScene else {
-                return statusBarOrientation.isPortrait
+            guard let windowScene = currentWindowScene else {
+                return true
             }
             return windowScene.interfaceOrientation.isPortrait
         } else {
@@ -215,13 +209,20 @@ extension UIApplication {
 
     @objc public var isLandscape: Bool {
         if #available(iOS 13.0, *) {
-            guard let windowScene = connectedScenes.first(where: {$0 is UIWindowScene}) as? UIWindowScene else {
-                return statusBarOrientation.isLandscape
+            guard let windowScene = currentWindowScene else {
+                return false
             }
             return windowScene.interfaceOrientation.isLandscape
         } else {
             // Fallback on earlier versions
             return statusBarOrientation.isLandscape
         }
+    }
+
+    @objc public var currentWindowScene: UIWindowScene? {
+        guard let windowScene = connectedScenes.first(where: {$0 is UIWindowScene}) as? UIWindowScene, windowScene.isFullScreen else {
+            return nil
+        }
+        return windowScene
     }
 }
