@@ -220,7 +220,7 @@ extension UIApplication {
     }
 
     @objc public var currentWindowScene: UIWindowScene? {
-        guard let windowScene = connectedScenes.first(where: {$0 is UIWindowScene}) as? UIWindowScene, windowScene.isFullScreen else {
+        guard let windowScene = connectedScenes.first(where: {$0 is UIWindowScene}) as? UIWindowScene else {
             return nil
         }
         return windowScene
