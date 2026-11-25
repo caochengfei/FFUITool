@@ -33,9 +33,7 @@ open class FFScreenFit: NSObject {
         UIApplication.shared.currentWindowScene?.screen.bounds.width ?? UIScreen.main.bounds.width
     }
 
-    private var _screenWidth: CGFloat = 0
     @objc public var screenHeight: CGFloat {
-        _screenWidth > 0 ? _screenWidth :
         (UIApplication.shared.currentWindowScene?.screen.bounds.height ?? UIScreen.main.bounds.height)
     }
 
@@ -49,9 +47,8 @@ open class FFScreenFit: NSObject {
         return _instace;
     }
     
-    @objc public func config(designSize: CGFloat = 375, screenWidth: CGFloat = UIScreen.main.bounds.width) {
+    @objc public func config(designSize: CGFloat = 375) {
         self.designSize = designSize
-        self._screenWidth = screenWidth
     }
     
     @objc public func getPx(size: CGFloat) -> CGFloat {
